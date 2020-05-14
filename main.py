@@ -9,6 +9,8 @@ import time
 import dlib
 import cv2
 
+draw = False
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--input", type=str,
     help="path to optional input video file")
@@ -23,7 +25,7 @@ args = vars(ap.parse_args())
 args['prototxt'] = 'mobilenet_ssd\MobileNetSSD_deploy.prototxt'
 args['model'] = 'mobilenet_ssd\MobileNetSSD_deploy.caffemodel'
 
-args['input'] = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4"
+args['input'] = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\Can You Win Blindfolded Musical Chairs_.mp4"
 args['output'] = 'output.avi'
 
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
@@ -48,7 +50,7 @@ H = None
 # instantiate our centroid tracker, then initialize a list to store
 # each of our dlib correlation trackers, followed by a dictionary to
 # map each unique object ID to a TrackableObject
-ct = CentroidTracker(maxDisappeared=40, maxDistance=50)
+ct = CentroidTracker(maxDisappeared = 40, maxDistance = 50)
 trackers = []
 trackableObjects = {}
 
@@ -88,6 +90,7 @@ while True:
     # check to see if we should run a more computationally expensive
     # object detection method to aid our tracker
     if totalFrames % args["skip_frames"] == 0:
+        print("frame {}".format(totalFrames))
         # set the status and initialize our new set of object trackers
         status = "Detecting"
         trackers = []
@@ -197,7 +200,8 @@ while True:
     if writer is not None:
         writer.write(frame)
 
-    cv2.imshow("Frame", frame)
+    if draw:
+        cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord("q"):
@@ -215,4 +219,5 @@ if writer is not None:
 
 vs.release()
 
-cv2.destroyAllWindows()
+if draw:
+    cv2.destroyAllWindows()
