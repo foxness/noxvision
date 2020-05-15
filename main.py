@@ -43,14 +43,12 @@ def draw_box_text(frame, rect, text):
 def main():
     video = cv2.VideoCapture(input_video)
     frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
-    # frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-    # frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    frame_width = None
-    frame_height = None
+    frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
+    engine = Engine(frame_width, frame_height)
     writer = None
 
-    labels = []
     analysis = { 'frames': [] }
     frames_processed = 0
 
@@ -63,7 +61,11 @@ def main():
             # end of video
             break
 
-        frame = imutils.resize(frame, width = 600)
+        engine.update(frame)
+        rects = engine.get_rects()
+        for rect in rects:
+            draw_box(frame, rect)
+
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
             detector = Detector(frame_width, frame_height)
@@ -75,37 +77,14 @@ def main():
         if frames_processed % skip_frames == 0:
             print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, frames_processed / frame_count))
 
-        if len(trackers) == 0:
-            status = "Detecting"
+        # info = [
+        #     ("Status", status)
+        # ]
 
-            detections = detector.detect(frame)
-            for detection in detections:
-                label = detection['label']
-                rect = detection['rect']
-
-                tracker = Tracker()
-                tracker.start(rgb, rect)
-
-                labels.append(label)
-                trackers.append(tracker)
-
-                draw_box_text(frame, rect, label)
-        else:
-            for (t, l) in zip(trackers, labels):
-                status = "Tracking"
-
-                rect = t.update(rgb)
-
-                draw_box_text(frame, rect, l)
-
-        info = [
-            ("Status", status)
-        ]
-
-        for (i, (k, v)) in enumerate(info):
-            text = "{}: {}".format(k, v)
-            cv2.putText(frame, text, (10, frame_height - ((i * 20) + 20)),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        # for (i, (k, v)) in enumerate(info):
+        #     text = "{}: {}".format(k, v)
+        #     cv2.putText(frame, text, (10, frame_height - ((i * 20) + 20)),
+        #         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
         if writer is not None:
             writer.write(frame)

@@ -68,23 +68,48 @@ class Tracker:
         self.t.update(rgb_frame)
 
 class Engine:
-    def __init__(self):
-        self.detector = None
+    def __init__(self, width, height):
+        self.orig_width = width
+        self.orig_height = height
+
+        self.desired_w = 500
+        self.desired_h = None
+        self.scale = None
+        
         self.trackers = []
         self.labels = []
         self.rects = []
+
+        self.calculate_desired()
+        self.detector = Detector(self.desired_w, self.desired_h)
+    
+    def scale_to_desired(self, frame):
+        dim = (self.desired_w, self.desired_h)
+        resized = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
+
+        return resized
+    
+    def scale_to_orig(self, arr):
+        return (np.array(arr) / self.scale).astype('int')
+    
+    def calculate_desired(self):
+        if self.desired_w is None:
+            self.scale = self.desired_h / float(self.orig_height)
+            self.desired_w = int(self.orig_width * self.scale)
+        else:
+            self.scale = self.desired_w / float(self.orig_width)
+            self.desired_h = int(self.orig_height * self.scale)
+    
+    def get_rects(self):
+        return self.scale_to_orig(self.rects)
     
     def update(self, frame):
         self.rects.clear()
 
-        frame = imutils.resize(frame, width = 600)
-
-        if self.detector is None:
-            (frame_height, frame_width) = frame.shape[:2]
-            detector = Detector(frame_width, frame_height)
+        frame = self.scale_to_desired(frame)
         
         if len(self.trackers) == 0:
-            detections = detector.detect(frame)
+            detections = self.detector.detect(frame)
             for detection in detections:
                 label = detection['label']
                 rect = detection['rect']
@@ -97,5 +122,6 @@ class Engine:
                 self.rects.append(rect)
         else:
             for tracker in self.trackers:
-                rect = tracker.update(frame)
+                tracker.update(frame)
+                rect = tracker.get_rect()
                 self.rects.append(rect)
