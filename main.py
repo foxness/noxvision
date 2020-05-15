@@ -64,7 +64,8 @@ ct = CentroidTracker(maxDisappeared = 40, maxDistance = 50)
 trackers = []
 trackableObjects = {}
 
-totalFrames = 0
+frame_count = int(vs.get(cv2.CAP_PROP_FRAME_COUNT))
+frames_processed = 0
 fps = FPS().start()
 
 while True:
@@ -98,8 +99,8 @@ while True:
 
     # check to see if we should run a more computationally expensive
     # object detection method to aid our tracker
-    if totalFrames % skip_frames == 0:
-        print("frame {}".format(totalFrames))
+    if frames_processed % skip_frames == 0:
+        print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, frames_processed / frame_count))
         # set the status and initialize our new set of object trackers
         status = "Detecting"
         trackers = []
@@ -216,7 +217,7 @@ while True:
     if key == ord("q"):
         break
 
-    totalFrames += 1
+    frames_processed += 1
     fps.update()
 
 fps.stop()
