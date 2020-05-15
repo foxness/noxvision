@@ -67,6 +67,12 @@ class Tracker:
         rgb_frame = self.frame2rgb(frame)
         self.t.update(rgb_frame)
 
+class RecognizedObject:
+    def __init__(self):
+        self.label = None
+        self.rect = None
+        self.tracker = None
+
 class Engine:
     def __init__(self, width, height):
         self.orig_width = width
@@ -76,9 +82,7 @@ class Engine:
         self.desired_h = None
         self.scale = None
         
-        self.trackers = []
-        self.labels = []
-        self.rects = []
+        self.objects = []
 
         self.calculate_desired()
         self.detector = Detector(self.desired_w, self.desired_h)
@@ -100,15 +104,21 @@ class Engine:
             self.scale = self.desired_w / float(self.orig_width)
             self.desired_h = int(self.orig_height * self.scale)
     
-    def get_rects(self):
-        return self.scale_to_orig(self.rects)
+    def get_objects(self):
+        newobjs = []
+        for obj in self.objects:
+            newobj = RecognizedObject()
+            newobj.label = obj.label
+            newobj.rect = self.scale_to_orig(obj.rect)
+            newobjs.append(newobj)
+        
+        return newobjs
     
     def update(self, frame):
-        self.rects.clear()
-
         frame = self.scale_to_desired(frame)
         
-        if len(self.trackers) == 0:
+        if len(self.objects) == 0:
+            print('detecting')
             detections = self.detector.detect(frame)
             for detection in detections:
                 label = detection['label']
@@ -117,11 +127,12 @@ class Engine:
                 tracker = Tracker()
                 tracker.start(frame, rect)
 
-                self.trackers.append(tracker)
-                self.labels.append(label)
-                self.rects.append(rect)
+                obj = RecognizedObject()
+                obj.tracker = tracker
+                obj.label = label
+                obj.rect = rect
+                self.objects.append(obj)
         else:
-            for tracker in self.trackers:
-                tracker.update(frame)
-                rect = tracker.get_rect()
-                self.rects.append(rect)
+            for obj in self.objects:
+                obj.tracker.update(frame)
+                obj.rect = obj.tracker.get_rect()

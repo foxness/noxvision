@@ -62,9 +62,9 @@ def main():
             break
 
         engine.update(frame)
-        rects = engine.get_rects()
-        for rect in rects:
-            draw_box(frame, rect)
+        objs = engine.get_objects()
+        for obj in objs:
+            draw_box_text(frame, obj.rect, obj.label)
 
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
