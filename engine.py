@@ -11,7 +11,7 @@ class Detector:
             "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
             "sofa", "train", "tvmonitor"]
 
-        self.net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
+        self.net = cv2.dnn.readNetFromCaffe(self.prototxt_path, self.model_path)
 
         self.confidence_threshold = confidence_threshold
         self.width = width

@@ -41,24 +41,24 @@ def draw_box_text(frame, startX, startY, endX, endY, text):
     cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
 
 def main():
-    detector = Detector()
-
-    print("[INFO] opening video file...")
     video = cv2.VideoCapture(input_video)
+    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+    # frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+    # frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    frame_width = None
+    frame_height = None
 
+    detector = None
     writer = None
+
     trackers = []
     labels = []
-    W = None
-    H = None
     analysis = { 'frames': [] }
     frames_processed = 0
-    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+
     fps = FPS().start()
-    rects = []
 
     while True:
-        rects.clear()
         (grabbed, frame) = video.read()
 
         if frame is None:
@@ -66,14 +66,15 @@ def main():
             break
 
         frame = imutils.resize(frame, width = 600)
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if frame_width is None or frame_height is None:
+            (frame_height, frame_width) = frame.shape[:2]
+            detector = Detector(frame_width, frame_height)
 
-        if W is None or H is None:
-            (H, W) = frame.shape[:2]
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         if export_video is not None and writer is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-            writer = cv2.VideoWriter(export_video, fourcc, 30, (W, H), True)
+            writer = cv2.VideoWriter(export_video, fourcc, 30, (frame_width, frame_height), True)
 
         if frames_processed % skip_frames == 0:
             print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, frames_processed / frame_count))
@@ -81,31 +82,19 @@ def main():
         if len(trackers) == 0:
             status = "Detecting"
 
-            blob = cv2.dnn.blobFromImage(frame, 0.007843, (W, H), 127.5)
-            net.setInput(blob)
-            detections = net.forward()
+            detections = detector.detect(frame)
+            for detection in detections:
+                label = detection['label']
+                (startX, startY, endX, endY) = detection['rect']
 
-            for i in np.arange(0, detections.shape[2]):
-                confidence = detections[0, 0, i, 2]
+                tracker = dlib.correlation_tracker()
+                rect = dlib.rectangle(startX, startY, endX, endY)
+                tracker.start_track(rgb, rect)
 
-                if confidence > confidence_threshold:
-                    idx = int(detections[0, 0, i, 1])
-                    label = CLASSES[idx]
+                labels.append(label)
+                trackers.append(tracker)
 
-                    if label != "person":
-                        continue
-
-                    box = detections[0, 0, i, 3:7] * np.array([W, H, W, H])
-                    (startX, startY, endX, endY) = box.astype("int")
-
-                    tracker = dlib.correlation_tracker()
-                    rect = dlib.rectangle(startX, startY, endX, endY)
-                    tracker.start_track(rgb, rect)
-
-                    labels.append(label)
-                    trackers.append(tracker)
-
-                    draw_box_text(frame, startX, startY, endX, endY, label)
+                draw_box_text(frame, startX, startY, endX, endY, label)
         else:
             for (t, l) in zip(trackers, labels):
                 status = "Tracking"
@@ -118,7 +107,6 @@ def main():
                 endX = int(pos.right())
                 endY = int(pos.bottom())
 
-                rects.append((startX, startY, endX, endY))
                 draw_box_text(frame, startX, startY, endX, endY, l)
 
         info = [
@@ -127,7 +115,7 @@ def main():
 
         for (i, (k, v)) in enumerate(info):
             text = "{}: {}".format(k, v)
-            cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+            cv2.putText(frame, text, (10, frame_height - ((i * 20) + 20)),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
         if writer is not None:
