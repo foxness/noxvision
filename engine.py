@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import dlib
+import imutils
 
 class Detector:
     def __init__(self, width, height, confidence_threshold = 0.4):
@@ -42,14 +43,17 @@ class Tracker:
     def __init__(self):
         self.t = dlib.correlation_tracker()
     
-    def start(self, rgb_frame, rect):
+    def frame2rgb(self, frame):
+        return cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    def start(self, frame, rect):
+        rgb_frame = self.frame2rgb(frame)
+
         (startX, startY, endX, endY) = rect
         dlib_rect = dlib.rectangle(startX, startY, endX, endY)
         self.t.start_track(rgb_frame, dlib_rect)
     
-    def update(self, rgb_frame):
-        self.t.update(rgb_frame)
-
+    def get_rect(self):
         position = self.t.get_position()
 
         startX = int(position.left())
@@ -58,3 +62,40 @@ class Tracker:
         endY = int(position.bottom())
 
         return (startX, startY, endX, endY)
+    
+    def update(self, frame):
+        rgb_frame = self.frame2rgb(frame)
+        self.t.update(rgb_frame)
+
+class Engine:
+    def __init__(self):
+        self.detector = None
+        self.trackers = []
+        self.labels = []
+        self.rects = []
+    
+    def update(self, frame):
+        self.rects.clear()
+
+        frame = imutils.resize(frame, width = 600)
+
+        if self.detector is None:
+            (frame_height, frame_width) = frame.shape[:2]
+            detector = Detector(frame_width, frame_height)
+        
+        if len(self.trackers) == 0:
+            detections = detector.detect(frame)
+            for detection in detections:
+                label = detection['label']
+                rect = detection['rect']
+
+                tracker = Tracker()
+                tracker.start(frame, rect)
+
+                self.trackers.append(tracker)
+                self.labels.append(label)
+                self.rects.append(rect)
+        else:
+            for tracker in self.trackers:
+                rect = tracker.update(frame)
+                self.rects.append(rect)

@@ -18,8 +18,6 @@ skip_frames = 30
 
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-
 # ap = argparse.ArgumentParser()
 # ap.add_argument("-i", "--input", type=str,
 #     help="path to optional input video file")
@@ -50,10 +48,8 @@ def main():
     frame_width = None
     frame_height = None
 
-    detector = None
     writer = None
 
-    trackers = []
     labels = []
     analysis = { 'frames': [] }
     frames_processed = 0
@@ -71,8 +67,6 @@ def main():
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
             detector = Detector(frame_width, frame_height)
-
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         if export_video is not None and writer is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
