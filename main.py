@@ -9,35 +9,45 @@ import time
 import dlib
 import cv2
 
+# ---------------------------------------------------------------------------
+
 draw = False
+input_video = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4"
+export_analysis = 'analysis.json'
+export_video = 'output.avi'
+confidence_threshold = 0.4
+skip_frames = 30
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--input", type=str,
-    help="path to optional input video file")
-ap.add_argument("-o", "--output", type=str,
-    help="path to optional output video file")
-ap.add_argument("-c", "--confidence", type=float, default=0.4,
-    help="minimum probability to filter weak detections")
-ap.add_argument("-s", "--skip-frames", type=int, default=30,
-    help="# of skip frames between detections")
-args = vars(ap.parse_args())
+# ---------------------------------------------------------------------------
 
-args['prototxt'] = 'mobilenet_ssd\MobileNetSSD_deploy.prototxt'
-args['model'] = 'mobilenet_ssd\MobileNetSSD_deploy.caffemodel'
-
-args['input'] = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\Can You Win Blindfolded Musical Chairs_.mp4"
-args['output'] = 'output.avi'
+prototxt_path = 'mobilenet_ssd\MobileNetSSD_deploy.prototxt'
+model_path = 'mobilenet_ssd\MobileNetSSD_deploy.caffemodel'
 
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
     "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
     "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
     "sofa", "train", "tvmonitor"]
 
+# ---------------------------------------------------------------------------
+
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-i", "--input", type=str,
+#     help="path to optional input video file")
+# ap.add_argument("-o", "--output", type=str,
+#     help="path to optional output video file")
+# ap.add_argument("-c", "--confidence", type=float, default=0.4,
+#     help="minimum probability to filter weak detections")
+# ap.add_argument("-s", "--skip-frames", type=int, default=30,
+#     help="# of skip frames between detections")
+# args = vars(ap.parse_args())
+
+# ---------------------------------------------------------------------------
+
 print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
 
 print("[INFO] opening video file...")
-vs = cv2.VideoCapture(args["input"])
+vs = cv2.VideoCapture(input_video)
 
 # initialize the video writer (we'll instantiate later if need be)
 writer = None
@@ -76,10 +86,9 @@ while True:
 
     # if we are supposed to be writing a video to disk, initialize
     # the writer
-    if args["output"] is not None and writer is None:
+    if export_video is not None and writer is None:
         fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-        writer = cv2.VideoWriter(args["output"], fourcc, 30,
-            (W, H), True)
+        writer = cv2.VideoWriter(export_video, fourcc, 30, (W, H), True)
 
     # initialize the current status along with our list of bounding
     # box rectangles returned by either (1) our object detector or
@@ -89,7 +98,7 @@ while True:
 
     # check to see if we should run a more computationally expensive
     # object detection method to aid our tracker
-    if totalFrames % args["skip_frames"] == 0:
+    if totalFrames % skip_frames == 0:
         print("frame {}".format(totalFrames))
         # set the status and initialize our new set of object trackers
         status = "Detecting"
@@ -109,7 +118,7 @@ while True:
 
             # filter out weak detections by requiring a minimum
             # confidence
-            if confidence > args["confidence"]:
+            if confidence > confidence_threshold:
                 # extract the index of the class label from the
                 # detections list
                 idx = int(detections[0, 0, i, 1])
