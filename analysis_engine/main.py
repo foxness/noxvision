@@ -9,25 +9,27 @@ from engine import *
 
 # ---------------------------------------------------------------------------
 
-draw = True
-input_video = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4"
-export_analysis = 'analysis.json'
-export_video = 'output.avi'
-confidence_threshold = 0.4
-skip_frames = 30
+draw = False
 
 # ---------------------------------------------------------------------------
 
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-i", "--input", type=str,
-#     help="path to optional input video file")
-# ap.add_argument("-o", "--output", type=str,
-#     help="path to optional output video file")
-# ap.add_argument("-c", "--confidence", type=float, default=0.4,
-#     help="minimum probability to filter weak detections")
-# ap.add_argument("-s", "--skip-frames", type=int, default=30,
-#     help="# of skip frames between detections")
-# args = vars(ap.parse_args())
+ap = argparse.ArgumentParser()
+
+# ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = True)
+# ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False)
+# ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False)
+
+ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = True, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
+ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = 'output.avi')
+ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
+
+args = vars(ap.parse_args())
+
+# ---------------------------------------------------------------------------
+
+input_video = args['input']
+output_video = args['outputvideo']
+output_analysis = args['outputanalysis']
 
 # ---------------------------------------------------------------------------
 
@@ -50,7 +52,7 @@ def main():
     writer = None
     frames_processed = 0
 
-    if export_analysis:
+    if output_analysis:
         serializer = Serializer()
 
     fps = FPS().start()
@@ -67,16 +69,16 @@ def main():
         for obj in objs:
             draw_box_text(frame, obj.rect, obj.label)
         
-        if export_analysis:
+        if output_analysis:
             serializer.process(objs)
 
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
             detector = Detector(frame_width, frame_height)
 
-        if export_video is not None and writer is None:
+        if output_video is not None and writer is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-            writer = cv2.VideoWriter(export_video, fourcc, 30, (frame_width, frame_height), True)
+            writer = cv2.VideoWriter(output_video, fourcc, 30, (frame_width, frame_height), True)
 
         if frames_processed % skip_frames == 0:
             print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, frames_processed / frame_count))
@@ -115,9 +117,9 @@ def main():
     if draw:
         cv2.destroyAllWindows()
     
-    if export_analysis:
+    if output_analysis:
         serialized = serializer.serialize()
-        file = open(export_analysis, 'w')
+        file = open(output_analysis, 'w')
         file.write(serialized)
         file.close()
 
