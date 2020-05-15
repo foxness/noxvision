@@ -5,6 +5,8 @@ import imutils
 import dlib
 import cv2
 
+from engine import *
+
 # ---------------------------------------------------------------------------
 
 draw = True
@@ -15,14 +17,6 @@ confidence_threshold = 0.4
 skip_frames = 30
 
 # ---------------------------------------------------------------------------
-
-prototxt_path = 'mobilenet_ssd\\MobileNetSSD_deploy.prototxt'
-model_path = 'mobilenet_ssd\\MobileNetSSD_deploy.caffemodel'
-
-CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
-    "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
-    "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
-    "sofa", "train", "tvmonitor"]
 
 # ---------------------------------------------------------------------------
 
@@ -47,8 +41,7 @@ def draw_box_text(frame, startX, startY, endX, endY, text):
     cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
 
 def main():
-    print("[INFO] loading model...")
-    net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
+    detector = Detector()
 
     print("[INFO] opening video file...")
     video = cv2.VideoCapture(input_video)
