@@ -48,9 +48,10 @@ def main():
 
     engine = Engine(frame_width, frame_height)
     writer = None
-
-    analysis = { 'frames': [] }
     frames_processed = 0
+
+    if export_analysis:
+        serializer = Serializer()
 
     fps = FPS().start()
 
@@ -65,6 +66,9 @@ def main():
         objs = engine.get_objects()
         for obj in objs:
             draw_box_text(frame, obj.rect, obj.label)
+        
+        if export_analysis:
+            serializer.process(objs)
 
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
@@ -110,5 +114,11 @@ def main():
 
     if draw:
         cv2.destroyAllWindows()
+    
+    if export_analysis:
+        serialized = serializer.serialize()
+        file = open(export_analysis, 'w')
+        file.write(serialized)
+        file.close()
 
 main()

@@ -2,6 +2,26 @@ import numpy as np
 import cv2
 import dlib
 import imutils
+import json
+
+class Serializer:
+    def __init__(self):
+        self.contents = None
+        self.start()
+    
+    def start(self):
+        self.contents = { 'frames': [] }
+    
+    def process(self, objs):
+        frame = []
+        for obj in objs:
+            serialized_obj = { 'label': obj.label, 'rect': obj.rect.tolist() }
+            frame.append(serialized_obj)
+        
+        self.contents['frames'].append(frame)
+    
+    def serialize(self):
+        return json.dumps(self.contents)
 
 class Detector:
     def __init__(self, width, height, confidence_threshold = 0.4):
