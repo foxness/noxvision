@@ -33,11 +33,13 @@ skip_frames = 30
 
 # ---------------------------------------------------------------------------
 
-def draw_box(frame, startX, startY, endX, endY):
+def draw_box(frame, rect):
+    (startX, startY, endX, endY) = rect
     cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
 
-def draw_box_text(frame, startX, startY, endX, endY, text):
-    draw_box(frame, startX, startY, endX, endY)
+def draw_box_text(frame, rect, text):
+    draw_box(frame, rect)
+    (startX, startY, _, _) = rect
     cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
 
 def main():
@@ -85,29 +87,22 @@ def main():
             detections = detector.detect(frame)
             for detection in detections:
                 label = detection['label']
-                (startX, startY, endX, endY) = detection['rect']
+                rect = detection['rect']
 
-                tracker = dlib.correlation_tracker()
-                rect = dlib.rectangle(startX, startY, endX, endY)
-                tracker.start_track(rgb, rect)
+                tracker = Tracker()
+                tracker.start(rgb, rect)
 
                 labels.append(label)
                 trackers.append(tracker)
 
-                draw_box_text(frame, startX, startY, endX, endY, label)
+                draw_box_text(frame, rect, label)
         else:
             for (t, l) in zip(trackers, labels):
                 status = "Tracking"
 
-                t.update(rgb)
-                pos = t.get_position()
+                rect = t.update(rgb)
 
-                startX = int(pos.left())
-                startY = int(pos.top())
-                endX = int(pos.right())
-                endY = int(pos.bottom())
-
-                draw_box_text(frame, startX, startY, endX, endY, l)
+                draw_box_text(frame, rect, l)
 
         info = [
             ("Status", status)

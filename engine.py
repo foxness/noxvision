@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import dlib
 
 class Detector:
     def __init__(self, width, height, confidence_threshold = 0.4):
@@ -36,3 +37,24 @@ class Detector:
                 detections.append({ 'label': label, 'rect': [startX, startY, endX, endY] })
         
         return detections
+
+class Tracker:
+    def __init__(self):
+        self.t = dlib.correlation_tracker()
+    
+    def start(self, rgb_frame, rect):
+        (startX, startY, endX, endY) = rect
+        dlib_rect = dlib.rectangle(startX, startY, endX, endY)
+        self.t.start_track(rgb_frame, dlib_rect)
+    
+    def update(self, rgb_frame):
+        self.t.update(rgb_frame)
+
+        position = self.t.get_position()
+
+        startX = int(position.left())
+        startY = int(position.top())
+        endX = int(position.right())
+        endY = int(position.bottom())
+
+        return (startX, startY, endX, endY)
