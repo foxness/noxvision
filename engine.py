@@ -74,14 +74,17 @@ class RecognizedObject:
         self.tracker = None
 
 class Engine:
-    def __init__(self, width, height):
+    def __init__(self, width, height, detection_period = 30):
         self.orig_width = width
         self.orig_height = height
 
         self.desired_w = 500
         self.desired_h = None
         self.scale = None
-        
+
+        self.detection_period = detection_period
+        self.frames_processed = 0
+
         self.objects = []
 
         self.calculate_desired()
@@ -114,11 +117,11 @@ class Engine:
         
         return newobjs
     
-    def update(self, frame):
+    def process(self, frame):
         frame = self.scale_to_desired(frame)
         
-        if len(self.objects) == 0:
-            print('detecting')
+        if self.frames_processed % self.detection_period == 0:
+            self.objects.clear()
             detections = self.detector.detect(frame)
             for detection in detections:
                 label = detection['label']
@@ -136,3 +139,5 @@ class Engine:
             for obj in self.objects:
                 obj.tracker.update(frame)
                 obj.rect = obj.tracker.get_rect()
+        
+        self.frames_processed += 1

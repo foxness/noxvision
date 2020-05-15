@@ -61,7 +61,7 @@ def main():
             # end of video
             break
 
-        engine.update(frame)
+        engine.process(frame)
         objs = engine.get_objects()
         for obj in objs:
             draw_box_text(frame, obj.rect, obj.label)
