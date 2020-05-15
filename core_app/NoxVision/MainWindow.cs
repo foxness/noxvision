@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace NoxVision
     public partial class MainWindow : Form
     {
         private static readonly string analysisEnginePath = @"R:\my\projects\noxvision\analysis_engine\main.py";
+        private static readonly string analysisEngineDir = @"R:\my\projects\noxvision\analysis_engine\";
 
         public MainWindow()
         {
@@ -23,13 +25,41 @@ namespace NoxVision
         private void LaunchEngine(string inputPath)
         {
             var process = new Process();
-            process.StartInfo.FileName = "python";
-            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{inputPath}\" -ov output.avi -oa analysis.json";
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+            process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
+            process.StartInfo.Arguments = $"{analysisEnginePath} -i {inputPath} -ov output.avi -oa analysis.json";
+            process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.EnableRaisingEvents = true;
+
+            process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
+            {
+                // frame 30/1283 (2%)
+                var line = e.Data;
+                if (string.IsNullOrEmpty(line))
+                {
+                    return;
+                }
+
+                var i1 = line.IndexOf('(');
+                if (i1 == -1)
+                {
+                    return;
+                }
+
+                var i2 = line.IndexOf('%');
+                var percentageString = line.Substring(i1 + 1, i2 - i1 - 1);
+                var percentage = Int32.Parse(percentageString);
+
+                progressBar.Invoke((MethodInvoker)delegate
+                {
+                    progressBar.Value = percentage;
+                });
+            });
+
             process.Start();
-            process.WaitForExit();
-            MessageBox.Show("done");
+            process.BeginOutputReadLine();
         }
 
         private void ToggleProgressbar(bool run)
@@ -43,7 +73,8 @@ namespace NoxVision
 
             using (var ofd = new OpenFileDialog())
             {
-                ofd.InitialDirectory = "c:\\";
+                // ofd.InitialDirectory = "c:\\";
+                ofd.InitialDirectory = @"R:\my\drive\sync\things\projects\noxvisioncloud\people - counting - opencv\videos";
                 ofd.Filter = "Video files (*.mp4;*.avi)|*.mp4;*.avi";
                 ofd.FilterIndex = 1;
                 ofd.RestoreDirectory = true;
@@ -53,17 +84,8 @@ namespace NoxVision
                     filePath = ofd.FileName;
 
                     ToggleProgressbar(true);
+
                     LaunchEngine(filePath);
-
-                    //LaunchEngine
-
-                    ////Read the contents of the file into a stream
-                    //var fileStream = ofd.OpenFile();
-
-                    //using (StreamReader reader = new StreamReader(fileStream))
-                    //{
-                    //    fileContent = reader.ReadToEnd();
-                    //}
                 }
             }
         }

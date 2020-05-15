@@ -10,6 +10,7 @@ from engine import *
 # ---------------------------------------------------------------------------
 
 draw = False
+skip_frames = 30
 
 # ---------------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ ap = argparse.ArgumentParser()
 # ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False)
 # ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False)
 
-ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = True, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
+ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
 ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = 'output.avi')
 ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
 
