@@ -1,4 +1,5 @@
-﻿using Accord.Video.FFMPEG;
+﻿using Accord;
+using Accord.Video.FFMPEG;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,6 +23,8 @@ namespace NoxVision
         private int height;
 
         private Pen pen;
+        private Font font;
+        private Brush brush;
 
         public int FrameWidth { get; private set; }
         public int FrameHeight { get; private set; }
@@ -34,6 +37,8 @@ namespace NoxVision
             reader = new VideoFileReader();
             videoLoaded = false;
             pen = new Pen(Color.GreenYellow, 2);
+            font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
+            brush = new SolidBrush(Color.White);
         }
 
         public void Load(string videoFilepath, AnalysisInfo analysisInfo)
@@ -99,6 +104,12 @@ namespace NoxVision
             g.DrawRectangle(pen, startX, startY, endX - startX, endY - startY);
         }
 
+        private void DrawLabeledBox(Graphics g, string label, int startX, int startY, int endX, int endY)
+        {
+            DrawBox(g, startX, startY, endX, endY);
+            g.DrawString(label, font, brush, startX, startY - 20);
+        }
+
         private void DrawFrame(Graphics g, Bitmap frame)
         {
             (int x, int y) = CalculateFrameLocation(frame.Width, frame.Height);
@@ -106,7 +117,7 @@ namespace NoxVision
 
             foreach (var obj in analysisInfo.frames[currentFrame])
             {
-                DrawBox(g, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+                DrawLabeledBox(g, obj.label.ToString(), obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
             }
         }
 
