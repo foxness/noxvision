@@ -4,13 +4,16 @@ import argparse
 import imutils
 import dlib
 import cv2
+import os
 
 from engine import *
 
 # ---------------------------------------------------------------------------
 
 draw = False
-skip_frames = 30
+report_progress_files = True
+report_frame_period = 100
+progress_filename = 'progress'
 
 # ---------------------------------------------------------------------------
 
@@ -81,8 +84,15 @@ def main():
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
             writer = cv2.VideoWriter(output_video, fourcc, 30, (frame_width, frame_height), True)
 
-        if frames_processed % skip_frames == 0:
-            print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, frames_processed / frame_count))
+        if frames_processed % report_frame_period == 0:
+            progress = frames_processed / frame_count
+            print("frame {}/{} ({:.0%})".format(frames_processed, frame_count, progress))
+
+            if report_progress_files:
+                file = open(progress_filename, 'w')
+                file.write("{}".format(int(progress * 100)))
+                file.close()
+
 
         # info = [
         #     ("Status", status)
@@ -123,5 +133,8 @@ def main():
         file = open(output_analysis, 'w')
         file.write(serialized)
         file.close()
+    
+    if report_progress_files:
+        os.remove(progress_filename)
 
 main()

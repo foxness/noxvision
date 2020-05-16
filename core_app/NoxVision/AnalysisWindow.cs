@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,43 +24,80 @@ namespace NoxVision
             InitializeComponent();
         }
 
-        private void LaunchEngine()
+        public void DoWork(IProgress<int> progress)
+        {
+            var process = LaunchProcess();
+
+            var progressFile = Path.Combine(analysisEngineDir, "progress");
+            while (!process.HasExited)
+            {
+                if (File.Exists(progressFile))
+                {
+                    var progressString = File.ReadAllText(progressFile);
+                    var progressInt = Int32.Parse(progressString);
+
+                    progress.Report(progressInt);
+                }
+
+                Thread.Sleep(1000);
+            }
+
+            // progress.Report(progressBar.Maximum);
+        }
+
+        private async void LaunchEngine()
+        {
+            progressBar.Value = 0;
+            var progress = new Progress<int>(v =>
+            {
+                progressBar.Value = v;
+            });
+
+            await Task.Run(() => DoWork(progress));
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private Process LaunchProcess()
         {
             var process = new Process();
             process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
             process.StartInfo.Arguments = $"{analysisEnginePath} -i {FilePath} -ov output.avi -oa analysis.json";
             process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.RedirectStandardOutput = true;
+            //process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
 
-            process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
-            {
-                // frame 30/1283 (2%)
-                var line = e.Data;
-                if (string.IsNullOrEmpty(line))
-                {
-                    return;
-                }
+            //process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
+            //{
+            //    // frame 30/1283 (2%)
+            //    var line = e.Data;
+            //    if (string.IsNullOrEmpty(line))
+            //    {
+            //        return;
+            //    }
 
-                var i1 = line.IndexOf('(');
-                if (i1 == -1)
-                {
-                    return;
-                }
+            //    var i1 = line.IndexOf('(');
+            //    if (i1 == -1)
+            //    {
+            //        return;
+            //    }
 
-                var i2 = line.IndexOf('%');
-                var percentageString = line.Substring(i1 + 1, i2 - i1 - 1);
-                var percentage = Int32.Parse(percentageString);
+            //    var i2 = line.IndexOf('%');
+            //    var percentageString = line.Substring(i1 + 1, i2 - i1 - 1);
+            //    var percentage = Int32.Parse(percentageString);
 
-                progressBar.Invoke((MethodInvoker)delegate
-                {
-                    progressBar.Value = percentage;
-                });
-            });
+            //    progressBar.Invoke((MethodInvoker)delegate
+            //    {
+            //        progressBar.Value = percentage;
+            //    });
+            //});
 
             process.Start();
-            process.BeginOutputReadLine();
+            //process.BeginOutputReadLine();
+
+            return process;
         }
 
         private void AnalysisWindow_Load(object sender, EventArgs e)
