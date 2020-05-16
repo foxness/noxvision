@@ -17,6 +17,7 @@ namespace NoxVision
     {
         private static readonly string analysisEnginePath = @"R:\my\projects\noxvision\analysis_engine\main.py";
         private static readonly string analysisEngineDir = @"R:\my\projects\noxvision\analysis_engine\";
+        private static readonly string progressFilename = @"R:\my\projects\noxvision\analysis_engine\";
         public string FilePath { get; set; }
 
         public AnalysisWindow()
@@ -28,7 +29,7 @@ namespace NoxVision
         {
             var process = LaunchProcess();
 
-            var progressFile = Path.Combine(analysisEngineDir, "progress");
+            var progressFile = Path.Combine(analysisEngineDir, progressFilename);
             while (!process.HasExited)
             {
                 if (File.Exists(progressFile))

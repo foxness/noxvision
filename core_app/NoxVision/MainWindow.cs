@@ -36,6 +36,8 @@ namespace NoxVision
                 {
                     aw.FilePath = ofd.FileName;
                     aw.ShowDialog();
+
+                    mediaPlayer.URL = @"R:\my\projects\noxvision\analysis_engine\output.avi";
                 }
             }
         }
