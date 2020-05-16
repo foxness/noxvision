@@ -32,6 +32,7 @@
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerControl = new System.Windows.Forms.PictureBox();
+            this.playButton = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).BeginInit();
             this.SuspendLayout();
@@ -65,16 +66,27 @@
             // 
             this.playerControl.Location = new System.Drawing.Point(0, 27);
             this.playerControl.Name = "playerControl";
-            this.playerControl.Size = new System.Drawing.Size(552, 387);
+            this.playerControl.Size = new System.Drawing.Size(484, 314);
             this.playerControl.TabIndex = 2;
             this.playerControl.TabStop = false;
             this.playerControl.Paint += new System.Windows.Forms.PaintEventHandler(this.playerControl_Paint);
+            // 
+            // playButton
+            // 
+            this.playButton.Location = new System.Drawing.Point(12, 379);
+            this.playButton.Name = "playButton";
+            this.playButton.Size = new System.Drawing.Size(75, 23);
+            this.playButton.TabIndex = 3;
+            this.playButton.Text = "Play";
+            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler(this.playButton_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 414);
+            this.Controls.Add(this.playButton);
             this.Controls.Add(this.playerControl);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -96,6 +108,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileMenu;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.PictureBox playerControl;
+        private System.Windows.Forms.Button playButton;
     }
 }
 

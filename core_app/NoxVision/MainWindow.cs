@@ -16,6 +16,9 @@ namespace NoxVision
 {
     public partial class MainWindow : Form
     {
+        private static readonly int menuStripHeight = 27;
+        private static readonly int playerControlsHeight = 50;
+
         private Timer playerTimer;
         private Videoplayer player;
 
@@ -42,12 +45,27 @@ namespace NoxVision
 
             player = new Videoplayer();
             UpdatePlayerSize();
+            UpdatePlayButtonText();
         }
 
         private void UpdatePlayerSize()
         {
             player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
-            ClientSize = new Size(playerControl.Size.Width, playerControl.Size.Height + 27);
+            ClientSize = new Size(playerControl.Size.Width, playerControl.Size.Height + menuStripHeight + playerControlsHeight);
+            playButton.Location = new Point(20, ClientSize.Height - 40);
+        }
+
+        private void UpdatePlayButtonText()
+        {
+            playButton.Text = player.Playing ? "Pause" : "Play";
+        }
+
+        private void playButton_Click(Object sender, EventArgs e)
+        {
+            player.OnPlayButtonClick();
+
+            UpdatePlayButtonText();
+            playerTimer.Enabled = player.Playing;
         }
 
         private void VideoplayerLoad()
@@ -62,8 +80,9 @@ namespace NoxVision
 
         private void VideoplayerStart()
         {
-            player.Start();
+            player.Play();
             playerTimer.Start();
+            UpdatePlayButtonText();
         }
 
         private void VideoplayerStop()

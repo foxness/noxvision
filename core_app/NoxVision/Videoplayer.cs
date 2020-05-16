@@ -30,7 +30,7 @@ namespace NoxVision
         public int FrameHeight { get; private set; }
         public double Framerate { get; private set; }
 
-        public bool Running { get; private set; }
+        public bool Playing { get; private set; }
 
         public Videoplayer()
         {
@@ -39,6 +39,17 @@ namespace NoxVision
             pen = new Pen(Color.GreenYellow, 2);
             font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
             brush = new SolidBrush(Color.White);
+            Playing = false;
+        }
+
+        public void OnPlayButtonClick()
+        {
+            if (!videoLoaded)
+            {
+                return;
+            }
+
+            Playing = !Playing;
         }
 
         public void Load(string videoFilepath, AnalysisInfo analysisInfo)
@@ -49,6 +60,7 @@ namespace NoxVision
             FrameHeight = reader.Height;
             Framerate = reader.FrameRate.Value;
             videoLoaded = true;
+            currentFrame = 0;
         }
 
         public void SetSize(int w, int h)
@@ -57,25 +69,14 @@ namespace NoxVision
             height = h;
         }
 
-        public async void Start()
+        public void Play()
         {
-            currentFrame = 0;
-            var startTime = DateTime.Now;
-            var previousTime = startTime;
-
-            Running = true;
-            while (Running)
-            {
-                var dt = DateTime.Now - previousTime;
-                previousTime += dt;
-                Update(dt);
-                await Task.Delay(8);
-            }
+            Playing = true;
         }
 
-        public void Update(TimeSpan dt)
+        public void Pause()
         {
-
+            Playing = false;
         }
 
         public void Unload()
@@ -87,7 +88,7 @@ namespace NoxVision
 
         public void Stop()
         {
-            Running = false;
+            Playing = false;
             Unload();
         }
 
@@ -121,6 +122,16 @@ namespace NoxVision
             }
         }
 
+        private void Update()
+        {
+            if (!Playing)
+            {
+                return;
+            }
+
+            currentFrame++;
+        }
+
         public void Draw(Graphics g)
         {
             if (!videoLoaded)
@@ -128,13 +139,14 @@ namespace NoxVision
                 return;
             }
 
-            var frame = reader.ReadVideoFrame();
+            var frame = reader.ReadVideoFrame(currentFrame);
             if (frame != null)
             {
                 DrawFrame(g, frame);
                 frame.Dispose();
-                currentFrame++;
             }
+
+            Update();
         }
     }
 }
