@@ -21,6 +21,8 @@ namespace NoxVision
         private int width;
         private int height;
 
+        private Pen pen;
+
         public int FrameWidth { get; private set; }
         public int FrameHeight { get; private set; }
         public double Framerate { get; private set; }
@@ -31,6 +33,7 @@ namespace NoxVision
         {
             reader = new VideoFileReader();
             videoLoaded = false;
+            pen = new Pen(Color.GreenYellow, 2);
         }
 
         public void Load(string videoFilepath, AnalysisInfo analysisInfo)
@@ -91,6 +94,22 @@ namespace NoxVision
             return (x, y);
         }
 
+        private void DrawBox(Graphics g, int startX, int startY, int endX, int endY)
+        {
+            g.DrawRectangle(pen, startX, startY, endX - startX, endY - startY);
+        }
+
+        private void DrawFrame(Graphics g, Bitmap frame)
+        {
+            (int x, int y) = CalculateFrameLocation(frame.Width, frame.Height);
+            g.DrawImage(frame, x, y);
+
+            foreach (var obj in analysisInfo.frames[currentFrame])
+            {
+                DrawBox(g, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+            }
+        }
+
         public void Draw(Graphics g)
         {
             if (!videoLoaded)
@@ -101,10 +120,8 @@ namespace NoxVision
             var frame = reader.ReadVideoFrame();
             if (frame != null)
             {
-                (int x, int y) = CalculateFrameLocation(frame.Width, frame.Height);
-                g.DrawImage(frame, x, y);
+                DrawFrame(g, frame);
                 frame.Dispose();
-
                 currentFrame++;
             }
         }

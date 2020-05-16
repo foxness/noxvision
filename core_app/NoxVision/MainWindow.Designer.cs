@@ -80,6 +80,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NoxVision";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.menuStrip.ResumeLayout(false);
