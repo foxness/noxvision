@@ -82,6 +82,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
             this.Text = "NoxVision";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

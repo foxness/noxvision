@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,18 +10,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Xabe.FFmpeg;
 
 namespace NoxVision
 {
     public partial class MainWindow : Form
     {
         private AnalysisWindow aw = new AnalysisWindow();
+
+        private string videoFilepath;
+        private string analysisFilepath;
+        private AnalysisInfo analysisInfo;
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void openMenuItem_Click(object sender, EventArgs e)
+        private async Task<AnalysisInfo> GetAnalysisInfo()
+        {
+            var rawJson = File.ReadAllText(analysisFilepath);
+            var info = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AnalysisInfo>(rawJson));
+
+            return info;
+        }
+
+        private async void openMenuItem_Click(object sender, EventArgs e)
         {
             var filePath = string.Empty;
 
@@ -34,12 +48,26 @@ namespace NoxVision
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    aw.FilePath = ofd.FileName;
+                    videoFilepath = ofd.FileName;
+                    aw.FilePath = videoFilepath;
                     aw.ShowDialog();
+                    analysisFilepath = aw.OutputAnalysisFilepath;
 
-                    mediaPlayer.URL = @"R:\my\projects\noxvision\analysis_engine\output.avi";
+                    analysisInfo = await GetAnalysisInfo();
+
+                    //mediaPlayer.URL = @"R:\my\projects\noxvision\analysis_engine\output.avi";
                 }
             }
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void OpenFile(string filePath)
+        {
+            IMediaInfo inputFile = await FFmpeg.GetMediaInfo(filePath);
         }
     }
 }

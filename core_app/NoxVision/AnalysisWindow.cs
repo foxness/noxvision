@@ -17,7 +17,10 @@ namespace NoxVision
     {
         private static readonly string analysisEnginePath = @"R:\my\projects\noxvision\analysis_engine\main.py";
         private static readonly string analysisEngineDir = @"R:\my\projects\noxvision\analysis_engine\";
-        private static readonly string progressFilename = @"R:\my\projects\noxvision\analysis_engine\";
+        private static readonly string progressFilename = @"progress";
+        private static readonly string analysisFilename = @"analysis.json";
+
+        public string OutputAnalysisFilepath { get; set; }
         public string FilePath { get; set; }
 
         public AnalysisWindow()
@@ -57,6 +60,7 @@ namespace NoxVision
             await Task.Run(() => DoWork(progress));
 
             DialogResult = DialogResult.OK;
+            OutputAnalysisFilepath = Path.Combine(analysisEngineDir, analysisFilename);
             Close();
         }
 
