@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoxVision
 {
-    enum Label
+    public enum Label
     {
         background, aeroplane, bicycle, bird, boat,
         bottle, bus, car, cat, chair, cow, diningtable,
@@ -14,12 +14,12 @@ namespace NoxVision
         sofa, train, tvmonitor
     }
 
-    class RecognizedObject
+    public class RecognizedObject
     {
         public Label label { get; set; }
         public IList<int> rect { get; set; }
     }
-    class AnalysisInfo
+    public class AnalysisInfo
     {
         public IList<IList<RecognizedObject>> frames { get; set; }
     }

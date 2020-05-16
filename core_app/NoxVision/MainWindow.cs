@@ -19,21 +19,13 @@ namespace NoxVision
         private AnalysisWindow aw = new AnalysisWindow();
 
         private string videoFilepath;
-        private string analysisFilepath;
         private AnalysisInfo analysisInfo;
 
         private Graphics g;
+        private Database database;
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private async Task<AnalysisInfo> GetAnalysisInfo()
-        {
-            var rawJson = File.ReadAllText(analysisFilepath);
-            var info = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<AnalysisInfo>(rawJson));
-
-            return info;
         }
 
         private async void openMenuItem_Click(object sender, EventArgs e)
@@ -51,11 +43,16 @@ namespace NoxVision
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     videoFilepath = ofd.FileName;
-                    aw.FilePath = videoFilepath;
-                    aw.ShowDialog();
-                    analysisFilepath = aw.OutputAnalysisFilepath;
 
-                    analysisInfo = await GetAnalysisInfo();
+                    if (!database.HasAnalysis(videoFilepath))
+                    {
+                        aw.FilePath = videoFilepath;
+                        aw.ShowDialog();
+                        database.Store(videoFilepath, aw.OutputAnalysisFilepath);
+                    }
+
+                    analysisInfo = await database.Get(videoFilepath);
+
                     OpenFile(videoFilepath);
                 }
             }
@@ -64,6 +61,7 @@ namespace NoxVision
         private void MainWindow_Load(object sender, EventArgs e)
         {
             g = player.CreateGraphics();
+            database = new Database();
         }
 
         private void OpenFile(string filePath)
