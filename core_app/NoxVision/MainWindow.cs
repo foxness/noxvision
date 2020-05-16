@@ -57,8 +57,6 @@ namespace NoxVision
 
                     analysisInfo = await GetAnalysisInfo();
                     OpenFile(videoFilepath);
-
-                    //mediaPlayer.URL = @"R:\my\projects\noxvision\analysis_engine\output.avi";
                 }
             }
         }
@@ -77,6 +75,7 @@ namespace NoxVision
                 {
                     var frame = reader.ReadVideoFrame();
                     g.DrawImage(frame, 0, 0);
+                    frame.Dispose();
                 }
                 reader.Close();
             }

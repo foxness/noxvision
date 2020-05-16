@@ -28,25 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.mediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.player = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.SuspendLayout();
-            // 
-            // mediaPlayer
-            // 
-            this.mediaPlayer.Enabled = true;
-            this.mediaPlayer.Location = new System.Drawing.Point(12, 27);
-            this.mediaPlayer.Name = "mediaPlayer";
-            this.mediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("mediaPlayer.OcxState")));
-            this.mediaPlayer.Size = new System.Drawing.Size(250, 182);
-            this.mediaPlayer.TabIndex = 0;
             // 
             // menuStrip
             // 
@@ -75,9 +63,9 @@
             // 
             // player
             // 
-            this.player.Location = new System.Drawing.Point(268, 27);
+            this.player.Location = new System.Drawing.Point(12, 27);
             this.player.Name = "player";
-            this.player.Size = new System.Drawing.Size(272, 182);
+            this.player.Size = new System.Drawing.Size(528, 375);
             this.player.TabIndex = 2;
             this.player.TabStop = false;
             // 
@@ -87,14 +75,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 414);
             this.Controls.Add(this.player);
-            this.Controls.Add(this.mediaPlayer);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
             this.Text = "NoxVision";
             this.Load += new System.EventHandler(this.MainWindow_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
@@ -104,8 +90,6 @@
         }
 
         #endregion
-
-        private AxWMPLib.AxWindowsMediaPlayer mediaPlayer;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileMenu;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
