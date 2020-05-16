@@ -63,9 +63,9 @@
             // 
             // playerControl
             // 
-            this.playerControl.Location = new System.Drawing.Point(12, 27);
+            this.playerControl.Location = new System.Drawing.Point(0, 27);
             this.playerControl.Name = "playerControl";
-            this.playerControl.Size = new System.Drawing.Size(528, 375);
+            this.playerControl.Size = new System.Drawing.Size(552, 387);
             this.playerControl.TabIndex = 2;
             this.playerControl.TabStop = false;
             this.playerControl.Paint += new System.Windows.Forms.PaintEventHandler(this.playerControl_Paint);

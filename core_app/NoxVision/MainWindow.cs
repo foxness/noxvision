@@ -17,7 +17,7 @@ namespace NoxVision
     public partial class MainWindow : Form
     {
         private Timer playerTimer;
-        private Videoplayer vpl;
+        private Videoplayer player;
 
         private AnalysisWindow aw = new AnalysisWindow();
 
@@ -40,24 +40,35 @@ namespace NoxVision
             g = playerControl.CreateGraphics();
             database = new Database();
 
-            vpl = new Videoplayer();
-            //vpl.Load(videoFilepath, analysisInfo);
+            player = new Videoplayer();
+            UpdatePlayerSize();
+        }
+
+        private void UpdatePlayerSize()
+        {
+            player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
+            ClientSize = new Size(playerControl.Size.Width, playerControl.Size.Height + 27);
         }
 
         private void VideoplayerLoad()
         {
-            vpl.Load(videoFilepath, analysisInfo);
+            player.Load(videoFilepath, analysisInfo);
+            var width = player.FrameWidth;
+            var height = player.FrameHeight;
+
+            playerControl.ClientSize = new Size(width, height);
+            UpdatePlayerSize();
         }
 
         private void VideoplayerStart()
         {
-            vpl.Start();
+            player.Start();
             playerTimer.Start();
         }
 
         private void VideoplayerStop()
         {
-            vpl.Stop();
+            player.Stop();
             playerTimer.Stop();
         }
 
@@ -68,7 +79,7 @@ namespace NoxVision
 
         private void playerControl_Paint(Object sender, PaintEventArgs e)
         {
-            vpl.Draw(e.Graphics);
+            player.Draw(e.Graphics);
         }
 
         private async void openMenuItem_Click(object sender, EventArgs e)
