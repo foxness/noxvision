@@ -33,8 +33,10 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.player = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).BeginInit();
             this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.SuspendLayout();
             // 
             // mediaPlayer
@@ -43,7 +45,7 @@
             this.mediaPlayer.Location = new System.Drawing.Point(12, 27);
             this.mediaPlayer.Name = "mediaPlayer";
             this.mediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("mediaPlayer.OcxState")));
-            this.mediaPlayer.Size = new System.Drawing.Size(528, 375);
+            this.mediaPlayer.Size = new System.Drawing.Size(250, 182);
             this.mediaPlayer.TabIndex = 0;
             // 
             // menuStrip
@@ -71,11 +73,20 @@
             this.openMenuItem.Text = "Open";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
+            // player
+            // 
+            this.player.Location = new System.Drawing.Point(268, 27);
+            this.player.Name = "player";
+            this.player.Size = new System.Drawing.Size(272, 182);
+            this.player.TabIndex = 2;
+            this.player.TabStop = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 414);
+            this.Controls.Add(this.player);
             this.Controls.Add(this.mediaPlayer);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -86,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.mediaPlayer)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -97,6 +109,7 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileMenu;
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
+        private System.Windows.Forms.PictureBox player;
     }
 }
 

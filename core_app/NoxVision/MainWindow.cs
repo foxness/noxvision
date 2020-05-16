@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Accord.Video.FFMPEG;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Xabe.FFmpeg;
 
 namespace NoxVision
 {
@@ -21,6 +21,8 @@ namespace NoxVision
         private string videoFilepath;
         private string analysisFilepath;
         private AnalysisInfo analysisInfo;
+
+        private Graphics g;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,6 +56,7 @@ namespace NoxVision
                     analysisFilepath = aw.OutputAnalysisFilepath;
 
                     analysisInfo = await GetAnalysisInfo();
+                    OpenFile(videoFilepath);
 
                     //mediaPlayer.URL = @"R:\my\projects\noxvision\analysis_engine\output.avi";
                 }
@@ -62,12 +65,21 @@ namespace NoxVision
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-
+            g = player.CreateGraphics();
         }
 
-        private async void OpenFile(string filePath)
+        private void OpenFile(string filePath)
         {
-            IMediaInfo inputFile = await FFmpeg.GetMediaInfo(filePath);
+            using (var reader = new VideoFileReader())
+            {
+                reader.Open(filePath);
+                for (int i = 0; i < reader.FrameCount; i++)
+                {
+                    var frame = reader.ReadVideoFrame();
+                    g.DrawImage(frame, 0, 0);
+                }
+                reader.Close();
+            }
         }
     }
 }
