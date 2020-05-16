@@ -16,6 +16,9 @@ namespace NoxVision
 {
     public partial class MainWindow : Form
     {
+        private Timer playerTimer;
+        private Videoplayer vpl;
+
         private AnalysisWindow aw = new AnalysisWindow();
 
         private string videoFilepath;
@@ -26,6 +29,46 @@ namespace NoxVision
         public MainWindow()
         {
             InitializeComponent();
+
+            playerTimer = new Timer();
+            playerTimer.Interval = 1000 / 120;
+            playerTimer.Tick += PlayerTimer_Tick;
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            g = playerControl.CreateGraphics();
+            database = new Database();
+
+            vpl = new Videoplayer();
+            //vpl.Load(videoFilepath, analysisInfo);
+        }
+
+        private void VideoplayerLoad()
+        {
+            vpl.Load(videoFilepath, analysisInfo);
+        }
+
+        private void VideoplayerStart()
+        {
+            vpl.Start();
+            playerTimer.Start();
+        }
+
+        private void VideoplayerStop()
+        {
+            vpl.Stop();
+            playerTimer.Stop();
+        }
+
+        private void PlayerTimer_Tick(Object sender, EventArgs e)
+        {
+            playerControl.Invalidate();
+        }
+
+        private void playerControl_Paint(Object sender, PaintEventArgs e)
+        {
+            vpl.Draw(e.Graphics);
         }
 
         private async void openMenuItem_Click(object sender, EventArgs e)
@@ -53,29 +96,9 @@ namespace NoxVision
 
                     analysisInfo = await database.Get(videoFilepath);
 
-                    OpenFile(videoFilepath);
+                    VideoplayerLoad();
+                    VideoplayerStart();
                 }
-            }
-        }
-
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-            g = player.CreateGraphics();
-            database = new Database();
-        }
-
-        private void OpenFile(string filePath)
-        {
-            using (var reader = new VideoFileReader())
-            {
-                reader.Open(filePath);
-                for (int i = 0; i < reader.FrameCount; i++)
-                {
-                    var frame = reader.ReadVideoFrame();
-                    g.DrawImage(frame, 0, 0);
-                    frame.Dispose();
-                }
-                reader.Close();
             }
         }
     }
