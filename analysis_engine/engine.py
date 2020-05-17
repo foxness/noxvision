@@ -4,6 +4,34 @@ import dlib
 import imutils
 import json
 
+class FaceDetector:
+    def __init__(self, width, height, confidence_threshold = 0.4):
+        self.prototxt_path = 'models\\face_detector_model.prototxt'
+        self.model_path = 'models\\face_detector_model.caffemodel'
+
+        self.net = cv2.dnn.readNetFromCaffe(self.prototxt_path, self.model_path)
+
+        self.confidence_threshold = confidence_threshold
+        self.width = width
+        self.height = height
+
+    def detect(self, frame):
+        blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0), swapRB=False, crop=False)
+
+        self.net.setInput(blob)
+        output = self.net.forward()
+
+        detections = []
+        for i in np.arange(0, output.shape[2]):
+            confidence = output[0, 0, i, 2]
+
+            if confidence > self.confidence_threshold:
+                box = output[0, 0, i, 3:7] * np.array([self.width, self.height, self.width, self.height])
+                (startX, startY, endX, endY) = box.astype("int")
+                detections.append([startX, startY, endX, endY])
+        
+        return detections
+
 class Serializer:
     def __init__(self):
         self.contents = None
@@ -25,8 +53,8 @@ class Serializer:
 
 class Detector:
     def __init__(self, width, height, confidence_threshold = 0.4):
-        self.prototxt_path = 'mobilenet_ssd\\MobileNetSSD_deploy.prototxt'
-        self.model_path = 'mobilenet_ssd\\MobileNetSSD_deploy.caffemodel'
+        self.prototxt_path = 'models\\object_detector_model.prototxt'
+        self.model_path = 'models\\object_detector_model.caffemodel'
 
         self.CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
             "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",

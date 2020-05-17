@@ -71,36 +71,9 @@ namespace NoxVision
             process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json";
             process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
-            //process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
 
-            //process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
-            //{
-            //    // frame 30/1283 (2%)
-            //    var line = e.Data;
-            //    if (string.IsNullOrEmpty(line))
-            //    {
-            //        return;
-            //    }
-
-            //    var i1 = line.IndexOf('(');
-            //    if (i1 == -1)
-            //    {
-            //        return;
-            //    }
-
-            //    var i2 = line.IndexOf('%');
-            //    var percentageString = line.Substring(i1 + 1, i2 - i1 - 1);
-            //    var percentage = Int32.Parse(percentageString);
-
-            //    progressBar.Invoke((MethodInvoker)delegate
-            //    {
-            //        progressBar.Value = percentage;
-            //    });
-            //});
-
             process.Start();
-            //process.BeginOutputReadLine();
 
             return process;
         }
