@@ -86,10 +86,13 @@ namespace NoxVision
             }
         }
 
-        //private int VideoCoordsToFrame(int x, int y)
-        //{
+        private (int, int) VideoCoordsToFrame(int x, int y)
+        {
+            int nx = (int)((double)x / VideoWidth * frameWidth + frameX);
+            int ny = (int)((double)y / VideoHeight * frameHeight + frameY);
 
-        //}
+            return (nx, ny);
+        }
 
         public void Play()
         {
@@ -143,13 +146,19 @@ namespace NoxVision
 
         private void DrawBox(Graphics g, int startX, int startY, int endX, int endY)
         {
-            g.DrawRectangle(pen, startX, startY, endX - startX, endY - startY);
+            (int sX, int sY) = VideoCoordsToFrame(startX, startY);
+            (int eX, int eY) = VideoCoordsToFrame(endX, endY);
+
+            g.DrawRectangle(pen, sX, sY, eX - sX, eY - sY);
         }
 
         private void DrawLabeledBox(Graphics g, string label, int startX, int startY, int endX, int endY)
         {
             DrawBox(g, startX, startY, endX, endY);
-            g.DrawString(label, font, brush, startX, startY - 20);
+
+            (int sX, int sY) = VideoCoordsToFrame(startX, startY);
+            Console.WriteLine($"before {startX} {startY} after {sX} {sY}");
+            g.DrawString(label, font, brush, sX, sY - 20);
         }
 
         private void DrawFrame(Graphics g, Bitmap frame)
