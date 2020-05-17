@@ -140,6 +140,7 @@ namespace NoxVision
         private void MainWindow_Resize(Object sender, EventArgs e)
         {
             UpdateControlLocations();
+            RedrawPlayer();
         }
 
         private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
