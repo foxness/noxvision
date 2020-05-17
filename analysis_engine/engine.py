@@ -32,6 +32,26 @@ class FaceDetector:
         
         return detections
 
+class FaceEmbedder:
+    def __init__(self):
+        self.model_path = 'models\\openface_nn4.small2.v1.t7'
+
+        self.net = cv2.dnn.readNetFromTorch(self.model_path)
+
+    def get_embedding(self, frame, face_rect):
+        (startX, startY, endX, endY) = face_rect
+        face = frame[startY:endY, startX:endX]
+
+        # (fH, fW) = face.shape[:2]
+        # if fW < 20 or fH < 20:
+        #     return 'face too small'
+
+        blob = cv2.dnn.blobFromImage(face, 1.0 / 255, (96, 96), (0, 0, 0), swapRB=True, crop=False)
+        self.net.setInput(blob)
+        embedding = self.net.forward().flatten()
+
+        return embedding
+
 class Serializer:
     def __init__(self):
         self.contents = None
