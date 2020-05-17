@@ -16,6 +16,7 @@ namespace NoxVision
 
     public class RecognizedObject
     {
+        public int id { get; set; }
         public Label label { get; set; }
         public IList<int> rect { get; set; }
     }

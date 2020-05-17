@@ -78,7 +78,7 @@ class Serializer:
     def process(self, objs, faces):
         frame = { 'objs': [], 'faces': [] }
         for obj in objs:
-            serialized_obj = { 'label': obj.label, 'rect': obj.rect.tolist() }
+            serialized_obj = { 'id': obj.id, 'label': obj.label, 'rect': obj.rect.tolist() }
             frame['objs'].append(serialized_obj)
         
         for face in faces:
@@ -156,6 +156,7 @@ class Tracker:
 
 class RecognizedObject:
     def __init__(self):
+        self.id = None
         self.label = None
         self.rect = None
         self.tracker = None
@@ -177,6 +178,7 @@ class Engine:
         self.detection_period = detection_period
         self.frames_processed = 0
 
+        self.nextId = 0
         self.objects = []
         self.faces = []
 
@@ -206,6 +208,7 @@ class Engine:
         newobjs = []
         for obj in self.objects:
             newobj = RecognizedObject()
+            newobj.id = obj.id
             newobj.label = obj.label
             newobj.rect = self.scale_to_orig(obj.rect)
             newobjs.append(newobj)
@@ -233,6 +236,8 @@ class Engine:
             tracker.start(frame, rect)
 
             obj = RecognizedObject()
+            obj.id = self.nextId
+            self.nextId += 1
             obj.tracker = tracker
             obj.label = label
             obj.rect = rect
