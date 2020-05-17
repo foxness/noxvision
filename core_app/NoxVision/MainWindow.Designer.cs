@@ -93,6 +93,9 @@
             this.track.TabIndex = 5;
             this.track.TabStop = false;
             this.track.Paint += new System.Windows.Forms.PaintEventHandler(this.track_Paint);
+            this.track.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_MouseDown);
+            this.track.MouseMove += new System.Windows.Forms.MouseEventHandler(this.track_MouseMove);
+            this.track.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_MouseUp);
             // 
             // MainWindow
             // 

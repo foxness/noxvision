@@ -67,6 +67,11 @@ namespace NoxVision
             Playing = false;
         }
 
+        public void SetProgress(double progress)
+        {
+            currentFrame = (int)(progress * frameCount);
+        }
+
         public void OnPlayButtonClick()
         {
             if (!videoLoaded)
@@ -224,6 +229,10 @@ namespace NoxVision
                 DrawFrame(g, frame);
                 frame.Dispose();
                 Update();
+            }
+            else
+            {
+                currentFrame = 0;
             }
         }
     }

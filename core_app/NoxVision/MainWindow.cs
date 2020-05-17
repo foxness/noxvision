@@ -21,6 +21,7 @@ namespace NoxVision
 
         private Timer playerTimer;
         private Videoplayer player;
+        private bool mouseDown;
 
         private AnalysisWindow aw;
 
@@ -35,6 +36,7 @@ namespace NoxVision
         {
             InitializeComponent();
 
+            mouseDown = false;
             aw = new AnalysisWindow();
             blackBrush = new SolidBrush(Color.Black);
             blueBrush = new SolidBrush(Color.Blue);
@@ -192,6 +194,47 @@ namespace NoxVision
                 int tickW = 5;
                 int tickH = 18;
                 g.FillRectangle(blueBrush, (int)(p * w) - tickW / 2, h / 2 - tickH / 2, tickW, tickH);
+            }
+        }
+
+        private void track_MouseDown(Object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mouseDown = true;
+                SetPlayerProgress(e);
+            }
+        }
+
+        private void track_MouseUp(Object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mouseDown = false;
+            }
+        }
+
+        private void SetPlayerProgress(MouseEventArgs e)
+        {
+            var progress = (double)e.X / track.Width;
+            if (progress < 0)
+            {
+                progress = 0;
+            }
+            else if (progress > 1)
+            {
+                progress = 1;
+            }
+
+            player.SetProgress(progress);
+            RedrawPlayer();
+        }
+
+        private void track_MouseMove(Object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                SetPlayerProgress(e);
             }
         }
     }
