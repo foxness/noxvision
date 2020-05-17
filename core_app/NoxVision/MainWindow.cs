@@ -45,7 +45,7 @@ namespace NoxVision
 
             player = new Videoplayer();
             player.OnPlaybackEnded += Player_OnPlaybackEnded;
-            UpdatePlayButtonText();
+            UpdatePlayButton();
             UpdateControlLocations();
         }
 
@@ -57,20 +57,13 @@ namespace NoxVision
 
         private void UpdatePlayer()
         {
-            UpdatePlayButtonText();
+            UpdatePlayButton();
             playerTimer.Enabled = player.Playing;
         }
 
-        private void UpdatePlayButtonText()
+        private void UpdatePlayButton()
         {
-            playButton.Text = player.Playing ? "Pause" : "Play";
-        }
-
-        private void playButton_Click(Object sender, EventArgs e)
-        {
-            player.OnPlayButtonClick();
-
-            UpdatePlayer();
+            playButton.Invalidate();
         }
 
         private void VideoplayerLoad()
@@ -82,7 +75,7 @@ namespace NoxVision
         {
             player.Play();
             playerTimer.Start();
-            UpdatePlayButtonText();
+            UpdatePlayButton();
         }
 
         private void VideoplayerStop()
@@ -140,7 +133,7 @@ namespace NoxVision
         private void UpdateControlLocations()
         {
             playerControl.Size = new Size(ClientSize.Width, ClientSize.Height - 100);
-            playButton.Location = new Point(20, ClientSize.Height - 40);
+            playButton.Location = new Point(15, ClientSize.Height - 61);
             player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
         }
 
@@ -152,6 +145,19 @@ namespace NoxVision
         private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
             player.Unload();
+        }
+
+        private void playButton_Click(Object sender, EventArgs e)
+        {
+            player.OnPlayButtonClick();
+
+            UpdatePlayer();
+        }
+
+        private void playButton_Paint(Object sender, PaintEventArgs e)
+        {
+            var img = player.Playing ? Properties.Resources.pause : Properties.Resources.play;
+            e.Graphics.DrawImage(img, 0, 0, playButton.ClientSize.Width, playButton.ClientSize.Height);
         }
     }
 }

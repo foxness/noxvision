@@ -157,7 +157,6 @@ namespace NoxVision
             DrawBox(g, startX, startY, endX, endY);
 
             (int sX, int sY) = VideoCoordsToFrame(startX, startY);
-            Console.WriteLine($"before {startX} {startY} after {sX} {sY}");
             g.DrawString(label, font, brush, sX, sY - 20);
         }
 
