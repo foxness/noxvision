@@ -45,7 +45,6 @@ namespace NoxVision
 
             player = new Videoplayer();
             player.OnPlaybackEnded += Player_OnPlaybackEnded;
-            UpdatePlayerSize();
             UpdatePlayButtonText();
         }
 
@@ -53,13 +52,6 @@ namespace NoxVision
         {
             UpdatePlayer();
             RedrawPlayer();
-        }
-
-        private void UpdatePlayerSize()
-        {
-            player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
-            ClientSize = new Size(playerControl.Size.Width, playerControl.Size.Height + menuStripHeight + playerControlsHeight);
-            playButton.Location = new Point(20, ClientSize.Height - 40);
         }
 
         private void UpdatePlayer()
@@ -80,13 +72,14 @@ namespace NoxVision
             UpdatePlayer();
         }
 
+        private void UpdatePlayerSize()
+        {
+            player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
+        }
+
         private void VideoplayerLoad()
         {
             player.Load(videoFilepath, analysisInfo);
-            var width = player.FrameWidth;
-            var height = player.FrameHeight;
-
-            playerControl.ClientSize = new Size(width, height);
             UpdatePlayerSize();
         }
 
@@ -147,6 +140,13 @@ namespace NoxVision
                     VideoplayerStart();
                 }
             }
+        }
+
+        private void MainWindow_Resize(Object sender, EventArgs e)
+        {
+            playerControl.Size = new Size(ClientSize.Width, ClientSize.Height - 100);
+            playButton.Location = new Point(20, ClientSize.Height - 40);
+            UpdatePlayerSize();
         }
     }
 }

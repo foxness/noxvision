@@ -64,16 +64,17 @@
             // 
             // playerControl
             // 
+            this.playerControl.BackColor = System.Drawing.Color.Black;
             this.playerControl.Location = new System.Drawing.Point(0, 27);
             this.playerControl.Name = "playerControl";
-            this.playerControl.Size = new System.Drawing.Size(484, 314);
+            this.playerControl.Size = new System.Drawing.Size(552, 314);
             this.playerControl.TabIndex = 2;
             this.playerControl.TabStop = false;
             this.playerControl.Paint += new System.Windows.Forms.PaintEventHandler(this.playerControl_Paint);
             // 
             // playButton
             // 
-            this.playButton.Location = new System.Drawing.Point(12, 379);
+            this.playButton.Location = new System.Drawing.Point(12, 347);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(75, 23);
             this.playButton.TabIndex = 3;
@@ -85,16 +86,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 414);
+            this.ClientSize = new System.Drawing.Size(552, 385);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.playerControl);
             this.Controls.Add(this.menuStrip);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip;
+            this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NoxVision";
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).EndInit();

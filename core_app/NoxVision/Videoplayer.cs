@@ -98,12 +98,31 @@ namespace NoxVision
             Unload();
         }
 
-        private (int, int) CalculateFrameLocation(int frameWidth, int frameHeight)
+        private Rectangle CalculateFrameRectangle()
         {
-            int x = (width - frameWidth) / 2;
-            int y = (height - frameHeight) / 2;
+            int x = 0;
+            int y = 0;
+            int w = 0;
+            int h = 0;
 
-            return (x, y);
+            if ((double)FrameWidth / FrameHeight > (double)width / height)
+            {
+                w = width;
+                h = width * FrameHeight / FrameWidth;
+
+                x = 0;
+                y = (height - h) / 2;
+            }
+            else
+            {
+                w = height * FrameWidth / FrameHeight;
+                h = height;
+
+                x = (width - w) / 2;
+                y = 0;
+            }
+
+            return new Rectangle(x, y, w, h);
         }
 
         private void DrawBox(Graphics g, int startX, int startY, int endX, int endY)
@@ -119,8 +138,8 @@ namespace NoxVision
 
         private void DrawFrame(Graphics g, Bitmap frame)
         {
-            (int x, int y) = CalculateFrameLocation(frame.Width, frame.Height);
-            g.DrawImage(frame, x, y);
+            var frameRect = CalculateFrameRectangle();
+            g.DrawImage(frame, frameRect);
 
             var cf = analysisInfo.frames[currentFrame];
 
