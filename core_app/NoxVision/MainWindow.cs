@@ -44,8 +44,15 @@ namespace NoxVision
             database = new Database();
 
             player = new Videoplayer();
+            player.OnPlaybackEnded += Player_OnPlaybackEnded;
             UpdatePlayerSize();
             UpdatePlayButtonText();
+        }
+
+        private void Player_OnPlaybackEnded()
+        {
+            UpdatePlayer();
+            RedrawPlayer();
         }
 
         private void UpdatePlayerSize()
@@ -53,6 +60,12 @@ namespace NoxVision
             player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
             ClientSize = new Size(playerControl.Size.Width, playerControl.Size.Height + menuStripHeight + playerControlsHeight);
             playButton.Location = new Point(20, ClientSize.Height - 40);
+        }
+
+        private void UpdatePlayer()
+        {
+            UpdatePlayButtonText();
+            playerTimer.Enabled = player.Playing;
         }
 
         private void UpdatePlayButtonText()
@@ -64,8 +77,7 @@ namespace NoxVision
         {
             player.OnPlayButtonClick();
 
-            UpdatePlayButtonText();
-            playerTimer.Enabled = player.Playing;
+            UpdatePlayer();
         }
 
         private void VideoplayerLoad()
@@ -91,9 +103,14 @@ namespace NoxVision
             playerTimer.Stop();
         }
 
-        private void PlayerTimer_Tick(Object sender, EventArgs e)
+        private void RedrawPlayer()
         {
             playerControl.Invalidate();
+        }
+
+        private void PlayerTimer_Tick(Object sender, EventArgs e)
+        {
+            RedrawPlayer();
         }
 
         private void playerControl_Paint(Object sender, PaintEventArgs e)

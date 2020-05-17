@@ -11,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace NoxVision
 {
+    public delegate void MyEventHandler();
+
     class Videoplayer
     {
+        public event MyEventHandler OnPlaybackEnded;
+
         private AnalysisInfo analysisInfo;
         private VideoFileReader reader;
         private DateTime startTime;
@@ -21,6 +25,7 @@ namespace NoxVision
 
         private int width;
         private int height;
+        private long frameCount;
 
         private Pen pen;
         private Font font;
@@ -61,6 +66,7 @@ namespace NoxVision
             Framerate = reader.FrameRate.Value;
             videoLoaded = true;
             currentFrame = 0;
+            frameCount = reader.FrameCount;
         }
 
         public void SetSize(int w, int h)
@@ -129,7 +135,16 @@ namespace NoxVision
                 return;
             }
 
-            currentFrame++;
+            if (currentFrame + 1 >= frameCount)
+            {
+                Playing = false;
+                currentFrame = 0;
+                OnPlaybackEnded();
+            }
+            else
+            {
+                currentFrame++;
+            }
         }
 
         public void Draw(Graphics g)
@@ -144,9 +159,8 @@ namespace NoxVision
             {
                 DrawFrame(g, frame);
                 frame.Dispose();
+                Update();
             }
-
-            Update();
         }
     }
 }
