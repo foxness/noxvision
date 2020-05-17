@@ -68,7 +68,7 @@ namespace NoxVision
         {
             var process = new Process();
             process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
-            process.StartInfo.Arguments = $"{analysisEnginePath} -i {FilePath} -ov output.avi -oa analysis.json";
+            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json";
             process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
             //process.StartInfo.RedirectStandardOutput = true;
