@@ -3,6 +3,17 @@ import cv2
 import dlib
 import imutils
 import json
+from sklearn.preprocessing import LabelEncoder
+from sklearn.svm import SVC
+
+class FaceRecognizer:
+    def __init__(self, confidence_threshold = 0.4):
+        self.recognizer = SVC(C = 1.0, kernel = "linear", probability = True)
+        self.le = LabelEncoder()
+
+    def fit(self, names, embeddings):
+        labels = self.le.fit_transform(names)
+        self.recognizer.fit(embeddings, labels)
 
 class FaceDetector:
     def __init__(self, width, height, confidence_threshold = 0.4):
