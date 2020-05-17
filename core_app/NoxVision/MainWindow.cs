@@ -22,16 +22,22 @@ namespace NoxVision
         private Timer playerTimer;
         private Videoplayer player;
 
-        private AnalysisWindow aw = new AnalysisWindow();
+        private AnalysisWindow aw;
 
         private string videoFilepath;
         private AnalysisInfo analysisInfo;
 
         private Graphics g;
         private Database database;
+        private Brush blackBrush;
+        private Brush greenBrush;
         public MainWindow()
         {
             InitializeComponent();
+
+            aw = new AnalysisWindow();
+            blackBrush = new SolidBrush(Color.Black);
+            greenBrush = new SolidBrush(Color.Green);
 
             playerTimer = new Timer();
             playerTimer.Interval = 1000 / 120;
@@ -134,6 +140,8 @@ namespace NoxVision
         {
             playerControl.Size = new Size(ClientSize.Width, ClientSize.Height - 100);
             playButton.Location = new Point(15, ClientSize.Height - 61);
+            track.Location = new Point(80, ClientSize.Height - 60);
+            track.Size = new Size(ClientSize.Width - 100, 48);
             player.SetSize(playerControl.ClientSize.Width, playerControl.ClientSize.Height);
         }
 
@@ -159,6 +167,23 @@ namespace NoxVision
         {
             var img = player.Playing ? Properties.Resources.pause : Properties.Resources.play;
             e.Graphics.DrawImage(img, 0, 0, playButton.ClientSize.Width, playButton.ClientSize.Height);
+        }
+
+        private void track_Paint(Object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+
+            int barW = 7;
+            int barH = 20;
+            int w = track.ClientSize.Width;
+            int h = track.ClientSize.Height;
+
+            //g.FillRectangle(greenBrush, 0, 0, w, h);
+
+            g.FillRectangle(blackBrush, 0, (h - barH) / 2, barW, barH);
+            g.FillRectangle(blackBrush, w - barW, (h - barH) / 2, barW, barH);
+
+            g.FillRectangle(blackBrush, 0, (h - barW) / 2, w, barW);
         }
     }
 }

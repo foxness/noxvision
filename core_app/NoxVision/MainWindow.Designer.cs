@@ -33,9 +33,11 @@
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playerControl = new System.Windows.Forms.PictureBox();
             this.playButton = new System.Windows.Forms.PictureBox();
+            this.track = new System.Windows.Forms.PictureBox();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.track)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -68,7 +70,7 @@
             this.playerControl.BackColor = System.Drawing.Color.Black;
             this.playerControl.Location = new System.Drawing.Point(0, 27);
             this.playerControl.Name = "playerControl";
-            this.playerControl.Size = new System.Drawing.Size(552, 314);
+            this.playerControl.Size = new System.Drawing.Size(552, 275);
             this.playerControl.TabIndex = 2;
             this.playerControl.TabStop = false;
             this.playerControl.Paint += new System.Windows.Forms.PaintEventHandler(this.playerControl_Paint);
@@ -83,11 +85,21 @@
             this.playButton.Click += new System.EventHandler(this.playButton_Click);
             this.playButton.Paint += new System.Windows.Forms.PaintEventHandler(this.playButton_Paint);
             // 
+            // track
+            // 
+            this.track.Location = new System.Drawing.Point(111, 323);
+            this.track.Name = "track";
+            this.track.Size = new System.Drawing.Size(371, 50);
+            this.track.TabIndex = 5;
+            this.track.TabStop = false;
+            this.track.Paint += new System.Windows.Forms.PaintEventHandler(this.track_Paint);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 385);
+            this.Controls.Add(this.track);
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.playerControl);
             this.Controls.Add(this.menuStrip);
@@ -103,6 +115,7 @@
             this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.track)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,6 +127,7 @@
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.PictureBox playerControl;
         private System.Windows.Forms.PictureBox playButton;
+        private System.Windows.Forms.PictureBox track;
     }
 }
 
