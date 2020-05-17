@@ -30,14 +30,14 @@ namespace NoxVision
         private Graphics g;
         private Database database;
         private Brush blackBrush;
-        private Brush greenBrush;
+        private Brush blueBrush;
         public MainWindow()
         {
             InitializeComponent();
 
             aw = new AnalysisWindow();
             blackBrush = new SolidBrush(Color.Black);
-            greenBrush = new SolidBrush(Color.Green);
+            blueBrush = new SolidBrush(Color.Blue);
 
             playerTimer = new Timer();
             playerTimer.Interval = 1000 / 120;
@@ -93,6 +93,7 @@ namespace NoxVision
         private void RedrawPlayer()
         {
             playerControl.Invalidate();
+            track.Invalidate();
         }
 
         private void PlayerTimer_Tick(Object sender, EventArgs e)
@@ -174,7 +175,7 @@ namespace NoxVision
             var g = e.Graphics;
 
             int barW = 7;
-            int barH = 20;
+            int barH = 15;
             int w = track.ClientSize.Width;
             int h = track.ClientSize.Height;
 
@@ -184,6 +185,14 @@ namespace NoxVision
             g.FillRectangle(blackBrush, w - barW, (h - barH) / 2, barW, barH);
 
             g.FillRectangle(blackBrush, 0, (h - barW) / 2, w, barW);
+
+            var p = player.Progress;
+            if (p != -1)
+            {
+                int tickW = 5;
+                int tickH = 18;
+                g.FillRectangle(blueBrush, (int)(p * w) - tickW / 2, h / 2 - tickH / 2, tickW, tickH);
+            }
         }
     }
 }

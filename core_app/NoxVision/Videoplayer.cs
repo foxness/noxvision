@@ -40,6 +40,21 @@ namespace NoxVision
         public int VideoHeight { get; private set; }
         public double Framerate { get; private set; }
 
+        public double Progress
+        {
+            get
+            {
+                if (videoLoaded)
+                {
+                    return (double)currentFrame / frameCount;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
         public bool Playing { get; private set; }
 
         public Videoplayer()
