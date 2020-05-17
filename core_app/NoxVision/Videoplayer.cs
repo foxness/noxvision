@@ -23,16 +23,21 @@ namespace NoxVision
         private int currentFrame;
         private bool videoLoaded;
 
-        private int width;
-        private int height;
+        private int frameX;
+        private int frameY;
+        private int frameWidth;
+        private int frameHeight;
+
+        private int clientWidth;
+        private int clientHeight;
         private long frameCount;
 
         private Pen pen;
         private Font font;
         private Brush brush;
 
-        public int FrameWidth { get; private set; }
-        public int FrameHeight { get; private set; }
+        public int VideoWidth { get; private set; }
+        public int VideoHeight { get; private set; }
         public double Framerate { get; private set; }
 
         public bool Playing { get; private set; }
@@ -61,19 +66,30 @@ namespace NoxVision
         {
             this.analysisInfo = analysisInfo;
             reader.Open(videoFilepath);
-            FrameWidth = reader.Width;
-            FrameHeight = reader.Height;
+            VideoWidth = reader.Width;
+            VideoHeight = reader.Height;
             Framerate = reader.FrameRate.Value;
             videoLoaded = true;
             currentFrame = 0;
             frameCount = reader.FrameCount;
+            CalculateFrameRectangle();
         }
 
         public void SetSize(int w, int h)
         {
-            width = w;
-            height = h;
+            clientWidth = w;
+            clientHeight = h;
+
+            if (videoLoaded)
+            {
+                CalculateFrameRectangle();
+            }
         }
+
+        //private int VideoCoordsToFrame(int x, int y)
+        //{
+
+        //}
 
         public void Play()
         {
@@ -98,31 +114,31 @@ namespace NoxVision
             Unload();
         }
 
-        private Rectangle CalculateFrameRectangle()
+        private void CalculateFrameRectangle()
         {
-            int x = 0;
-            int y = 0;
-            int w = 0;
-            int h = 0;
+            int x, y, w, h;
 
-            if ((double)FrameWidth / FrameHeight > (double)width / height)
+            if ((double)VideoWidth / VideoHeight > (double)clientWidth / clientHeight)
             {
-                w = width;
-                h = width * FrameHeight / FrameWidth;
+                w = clientWidth;
+                h = clientWidth * VideoHeight / VideoWidth;
 
                 x = 0;
-                y = (height - h) / 2;
+                y = (clientHeight - h) / 2;
             }
             else
             {
-                w = height * FrameWidth / FrameHeight;
-                h = height;
+                w = clientHeight * VideoWidth / VideoHeight;
+                h = clientHeight;
 
-                x = (width - w) / 2;
+                x = (clientWidth - w) / 2;
                 y = 0;
             }
 
-            return new Rectangle(x, y, w, h);
+            frameX = x;
+            frameY = y;
+            frameWidth = w;
+            frameHeight = h;
         }
 
         private void DrawBox(Graphics g, int startX, int startY, int endX, int endY)
@@ -138,8 +154,7 @@ namespace NoxVision
 
         private void DrawFrame(Graphics g, Bitmap frame)
         {
-            var frameRect = CalculateFrameRectangle();
-            g.DrawImage(frame, frameRect);
+            g.DrawImage(frame, frameX, frameY, frameWidth, frameHeight);
 
             var cf = analysisInfo.frames[currentFrame];
 
