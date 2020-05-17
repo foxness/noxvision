@@ -122,9 +122,16 @@ namespace NoxVision
             (int x, int y) = CalculateFrameLocation(frame.Width, frame.Height);
             g.DrawImage(frame, x, y);
 
-            foreach (var obj in analysisInfo.frames[currentFrame])
+            var cf = analysisInfo.frames[currentFrame];
+
+            foreach (var obj in cf.objs)
             {
                 DrawLabeledBox(g, obj.label.ToString(), obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+            }
+
+            foreach (var face in cf.faces)
+            {
+                DrawLabeledBox(g, "face", face.rect[0], face.rect[1], face.rect[2], face.rect[3]);
             }
         }
 

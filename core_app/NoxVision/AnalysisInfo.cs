@@ -19,8 +19,20 @@ namespace NoxVision
         public Label label { get; set; }
         public IList<int> rect { get; set; }
     }
+
+    public class Face
+    {
+        public IList<double> embedding { get; set; }
+        public IList<int> rect { get; set; }
+    }
+
+    public class Frame
+    {
+        public IList<RecognizedObject> objs { get; set; }
+        public IList<Face> faces { get; set; }
+    }
     public class AnalysisInfo
     {
-        public IList<IList<RecognizedObject>> frames { get; set; }
+        public IList<Frame> frames { get; set; }
     }
 }

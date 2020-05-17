@@ -27,7 +27,7 @@ class FaceDetector:
         self.height = height
 
     def detect(self, frame):
-        blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0), swapRB=False, crop=False)
+        blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), (104.0, 177.0, 123.0), swapRB=False, crop=False)
 
         self.net.setInput(blob)
         output = self.net.forward()
@@ -39,6 +39,10 @@ class FaceDetector:
             if confidence > self.confidence_threshold:
                 box = output[0, 0, i, 3:7] * np.array([self.width, self.height, self.width, self.height])
                 (startX, startY, endX, endY) = box.astype("int")
+
+                if startX < 0 or startY < 0 or endX >= self.width or endY >= self.height:
+                    continue
+
                 detections.append([startX, startY, endX, endY])
         
         return detections
@@ -71,11 +75,15 @@ class Serializer:
     def start(self):
         self.contents = { 'frames': [] }
     
-    def process(self, objs):
-        frame = []
+    def process(self, objs, faces):
+        frame = { 'objs': [], 'faces': [] }
         for obj in objs:
             serialized_obj = { 'label': obj.label, 'rect': obj.rect.tolist() }
-            frame.append(serialized_obj)
+            frame['objs'].append(serialized_obj)
+        
+        for face in faces:
+            serialized_face = { 'embedding': face.embedding.tolist(), 'rect': face.rect.tolist() }
+            frame['faces'].append(serialized_face)
         
         self.contents['frames'].append(frame)
     
@@ -152,6 +160,11 @@ class RecognizedObject:
         self.rect = None
         self.tracker = None
 
+class Face:
+    def __init__(self):
+        self.rect = None
+        self.embedding = None
+
 class Engine:
     def __init__(self, width, height, detection_period = 30):
         self.orig_width = width
@@ -165,9 +178,12 @@ class Engine:
         self.frames_processed = 0
 
         self.objects = []
+        self.faces = []
 
         self.calculate_desired()
         self.detector = Detector(self.desired_w, self.desired_h)
+        self.face_detector = FaceDetector(self.desired_w, self.desired_h)
+        self.face_embedder = FaceEmbedder()
     
     def scale_to_desired(self, frame):
         dim = (self.desired_w, self.desired_h)
@@ -196,24 +212,55 @@ class Engine:
         
         return newobjs
     
+    def get_faces(self):
+        newfaces = []
+        for face in self.faces:
+            newface = Face()
+            newface.rect = self.scale_to_orig(face.rect)
+            newface.embedding = face.embedding
+            newfaces.append(newface)
+        
+        return newfaces
+    
+    def detect_objects(self, frame):
+        detections = self.detector.detect(frame)
+        objs = []
+        for detection in detections:
+            label = detection['label']
+            rect = detection['rect']
+
+            tracker = Tracker()
+            tracker.start(frame, rect)
+
+            obj = RecognizedObject()
+            obj.tracker = tracker
+            obj.label = label
+            obj.rect = rect
+            objs.append(obj)
+        
+        return objs
+    
+    def detect_faces(self, frame):
+        detections = self.face_detector.detect(frame)
+
+        faces = []
+        for face_rect in detections:
+            embedding = self.face_embedder.get_embedding(frame, face_rect)
+
+            face = Face()
+            face.rect = face_rect
+            face.embedding = embedding
+            faces.append(face)
+        
+        return faces
+    
     def process(self, frame):
+        self.faces.clear()
         frame = self.scale_to_desired(frame)
         
         if self.frames_processed % self.detection_period == 0:
-            self.objects.clear()
-            detections = self.detector.detect(frame)
-            for detection in detections:
-                label = detection['label']
-                rect = detection['rect']
-
-                tracker = Tracker()
-                tracker.start(frame, rect)
-
-                obj = RecognizedObject()
-                obj.tracker = tracker
-                obj.label = label
-                obj.rect = rect
-                self.objects.append(obj)
+            self.objects = self.detect_objects(frame)
+            self.faces = self.detect_faces(frame)
         else:
             for obj in self.objects:
                 obj.tracker.update(frame)

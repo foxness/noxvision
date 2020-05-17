@@ -23,7 +23,8 @@ ap = argparse.ArgumentParser()
 # ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False)
 # ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False)
 
-ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
+#ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\Can You Win Blindfolded Musical Chairs_.mp4")
+ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\asd.mp4")
 ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = 'output.avi')
 ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
 
@@ -45,6 +46,10 @@ def draw_box_text(frame, rect, text):
     draw_box(frame, rect)
     (startX, startY, _, _) = rect
     cv2.putText(frame, text, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
+
+def draw_face(frame, rect):
+    (startX, startY, endX, endY) = rect
+    cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 0, 255), 3)
 
 def main():
     video = cv2.VideoCapture(input_video)
@@ -70,15 +75,20 @@ def main():
 
         engine.process(frame)
         objs = engine.get_objects()
+        faces = engine.get_faces()
+        # if (len(faces) > 0):
+        #     print('face found')
+
         for obj in objs:
             draw_box_text(frame, obj.rect, obj.label)
+        for face in faces:
+            draw_face(frame, face.rect)
         
         if output_analysis:
-            serializer.process(objs)
+            serializer.process(objs, faces)
 
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
-            detector = Detector(frame_width, frame_height)
 
         if output_video is not None and writer is None:
             fourcc = cv2.VideoWriter_fourcc(*"MJPG")
