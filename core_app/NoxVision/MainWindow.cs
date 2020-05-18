@@ -250,6 +250,7 @@ namespace NoxVision
         private void settingsItem_Click(Object sender, EventArgs e)
         {
             sw.ShowDialog();
+            player.LoadSettings(new SettingsDb());
         }
     }
 }

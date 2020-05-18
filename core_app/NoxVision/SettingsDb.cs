@@ -16,6 +16,7 @@ namespace NoxVision
 
         public int ConfidenceThreshold { get; set; }
         public int FaceConfidenceThreshold { get; set; }
+        public bool DrawPerson { get; set; }
 
         public SettingsDb()
         {
@@ -49,6 +50,12 @@ namespace NoxVision
                                 FaceConfidenceThreshold = Int32.Parse(split[1]);
                                 break;
                             }
+
+                        case nameof(DrawPerson):
+                            {
+                                DrawPerson = Boolean.Parse(split[1]);
+                                break;
+                            }
                     }
                 }
             }
@@ -63,6 +70,7 @@ namespace NoxVision
         {
             ConfidenceThreshold = 50;
             FaceConfidenceThreshold = 50;
+            DrawPerson = true;
         }
 
         public void SaveDb()
@@ -71,6 +79,7 @@ namespace NoxVision
 
             db.Add(nameof(ConfidenceThreshold), ConfidenceThreshold.ToString());
             db.Add(nameof(FaceConfidenceThreshold), FaceConfidenceThreshold.ToString());
+            db.Add(nameof(DrawPerson), DrawPerson.ToString());
 
             var contents = "";
             foreach (var item in db)

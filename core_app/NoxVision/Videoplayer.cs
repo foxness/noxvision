@@ -37,6 +37,8 @@ namespace NoxVision
         private Font font;
         private Brush brush;
 
+        public bool DrawPerson { get; set; } = true;
+
         public int VideoWidth { get; private set; }
         public int VideoHeight { get; private set; }
         public double Framerate { get; private set; }
@@ -66,6 +68,11 @@ namespace NoxVision
             font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
             brush = new SolidBrush(Color.White);
             Playing = false;
+        }
+
+        public void LoadSettings(SettingsDb s)
+        {
+            DrawPerson = s.DrawPerson;
         }
 
         public void SetProgress(double progress)
@@ -189,6 +196,11 @@ namespace NoxVision
 
             foreach (var obj in cf.objs)
             {
+                if (obj.label == Label.person && !DrawPerson)
+                {
+                    continue;
+                }
+
                 DrawLabeledBox(g, obj.label.ToString(), obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
             }
 

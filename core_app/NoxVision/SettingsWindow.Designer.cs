@@ -35,6 +35,7 @@
             this.faceConfidenceTextLabel = new System.Windows.Forms.Label();
             this.faceConfidenceBar = new System.Windows.Forms.TrackBar();
             this.faceConfidenceLabel = new System.Windows.Forms.Label();
+            this.personCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.confidenceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.faceConfidenceBar)).BeginInit();
             this.SuspendLayout();
@@ -97,11 +98,23 @@
             this.faceConfidenceLabel.Text = "50";
             this.faceConfidenceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // personCheck
+            // 
+            this.personCheck.AutoSize = true;
+            this.personCheck.Location = new System.Drawing.Point(15, 132);
+            this.personCheck.Name = "personCheck";
+            this.personCheck.Size = new System.Drawing.Size(59, 17);
+            this.personCheck.TabIndex = 7;
+            this.personCheck.Text = "Person";
+            this.personCheck.UseVisualStyleBackColor = true;
+            this.personCheck.CheckedChanged += new System.EventHandler(this.personCheck_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 321);
+            this.Controls.Add(this.personCheck);
             this.Controls.Add(this.faceConfidenceLabel);
             this.Controls.Add(this.faceConfidenceBar);
             this.Controls.Add(this.faceConfidenceTextLabel);
@@ -130,5 +143,6 @@
         private System.Windows.Forms.Label faceConfidenceTextLabel;
         private System.Windows.Forms.TrackBar faceConfidenceBar;
         private System.Windows.Forms.Label faceConfidenceLabel;
+        private System.Windows.Forms.CheckBox personCheck;
     }
 }

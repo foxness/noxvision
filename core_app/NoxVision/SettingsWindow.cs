@@ -43,10 +43,16 @@ namespace NoxVision
             UpdateFaceConfidenceLabel();
         }
 
+        private void SetDraws()
+        {
+            personCheck.Checked = settings.DrawPerson;
+        }
+
         private void SettingsWindow_Load(Object sender, EventArgs e)
         {
             SetConfidenceThreshold();
             SetFaceConfidenceThreshold();
+            SetDraws();
         }
 
         private void confidenceBar_ValueChanged(Object sender, EventArgs e)
@@ -64,6 +70,11 @@ namespace NoxVision
         private void SettingsWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
             settings.SaveDb();
+        }
+
+        private void personCheck_CheckedChanged(Object sender, EventArgs e)
+        {
+            settings.DrawPerson = personCheck.Checked;
         }
     }
 }
