@@ -61,12 +61,10 @@ def main():
     frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
+    analyzer = Analyzer()
     engine = Engine(frame_width, frame_height, confidence_threshold = confidence_threshold, face_confidence_threshold = face_confidence_threshold)
     writer = None
     frames_processed = 0
-
-    if output_analysis:
-        serializer = Serializer()
 
     fps = FPS().start()
 
@@ -80,16 +78,12 @@ def main():
         engine.process(frame)
         objs = engine.get_objects()
         faces = engine.get_faces()
-        # if (len(faces) > 0):
-        #     print('face found')
+        analyzer.add_frame(objs, faces)
 
         for obj in objs:
             draw_box_text(frame, obj.rect, obj.label)
         for face in faces:
             draw_face(frame, face.rect)
-        
-        if output_analysis:
-            serializer.process(objs, faces)
 
         if frame_width is None or frame_height is None:
             (frame_height, frame_width) = frame.shape[:2]
@@ -143,7 +137,7 @@ def main():
         cv2.destroyAllWindows()
     
     if output_analysis:
-        serialized = serializer.serialize()
+        serialized = analyzer.serialize()
         file = open(output_analysis, 'w')
         file.write(serialized)
         file.close()

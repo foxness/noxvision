@@ -6,6 +6,32 @@ import json
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 
+class Analyzer:
+    def __init__(self):
+        self.objects = []
+        self.faces = []
+    
+    def add_frame(self, objs, faces):
+        self.objects.append(objs)
+        self.faces.append(faces)
+    
+    def serialize(self):
+        contents = { 'frames': [] }
+
+        for (objs, faces) in zip(self.objects, self.faces):
+            frame = { 'objs': [], 'faces': [] }
+            for obj in objs:
+                serialized_obj = { 'id': obj.id, 'label': obj.label, 'rect': obj.rect.tolist() }
+                frame['objs'].append(serialized_obj)
+            
+            for face in faces:
+                serialized_face = { 'embedding': face.embedding.tolist(), 'rect': face.rect.tolist() }
+                frame['faces'].append(serialized_face)
+            
+            contents['frames'].append(frame)
+        
+        return json.dumps(contents)
+
 class FaceRecognizer:
     def __init__(self, confidence_threshold = 0.4):
         self.recognizer = SVC(C = 1.0, kernel = "linear", probability = True)
@@ -66,29 +92,6 @@ class FaceEmbedder:
         embedding = self.net.forward().flatten()
 
         return embedding
-
-class Serializer:
-    def __init__(self):
-        self.contents = None
-        self.start()
-    
-    def start(self):
-        self.contents = { 'frames': [] }
-    
-    def process(self, objs, faces):
-        frame = { 'objs': [], 'faces': [] }
-        for obj in objs:
-            serialized_obj = { 'id': obj.id, 'label': obj.label, 'rect': obj.rect.tolist() }
-            frame['objs'].append(serialized_obj)
-        
-        for face in faces:
-            serialized_face = { 'embedding': face.embedding.tolist(), 'rect': face.rect.tolist() }
-            frame['faces'].append(serialized_face)
-        
-        self.contents['frames'].append(frame)
-    
-    def serialize(self):
-        return json.dumps(self.contents)
 
 class Detector:
     def __init__(self, width, height, confidence_threshold = 0.5):
