@@ -167,7 +167,7 @@ class Face:
         self.embedding = None
 
 class Engine:
-    def __init__(self, width, height, detection_period = 30, confidence_threshold = 0.5):
+    def __init__(self, width, height, detection_period = 30, confidence_threshold = 0.5, face_confidence_threshold = 0.5):
         self.orig_width = width
         self.orig_height = height
 
@@ -177,6 +177,7 @@ class Engine:
 
         self.detection_period = detection_period
         self.confidence_threshold = confidence_threshold
+        self.face_confidence_threshold = face_confidence_threshold
         self.frames_processed = 0
 
         self.nextId = 0
@@ -184,8 +185,8 @@ class Engine:
         self.faces = []
 
         self.calculate_desired()
-        self.detector = Detector(self.desired_w, self.desired_h)
-        self.face_detector = FaceDetector(self.desired_w, self.desired_h)
+        self.detector = Detector(self.desired_w, self.desired_h, confidence_threshold = self.confidence_threshold)
+        self.face_detector = FaceDetector(self.desired_w, self.desired_h, confidence_threshold = self.face_confidence_threshold)
         self.face_embedder = FaceEmbedder()
     
     def scale_to_desired(self, frame):

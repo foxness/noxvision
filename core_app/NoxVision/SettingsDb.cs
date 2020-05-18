@@ -15,6 +15,7 @@ namespace NoxVision
         private static string dbPath;
 
         public int ConfidenceThreshold { get; set; }
+        public int FaceConfidenceThreshold { get; set; }
 
         public SettingsDb()
         {
@@ -42,15 +43,26 @@ namespace NoxVision
                                 ConfidenceThreshold = Int32.Parse(split[1]);
                                 break;
                             }
+
+                        case nameof(FaceConfidenceThreshold):
+                            {
+                                FaceConfidenceThreshold = Int32.Parse(split[1]);
+                                break;
+                            }
                     }
                 }
             }
             else
             {
-                ConfidenceThreshold = 50;
-
+                SetDefaultSettings();
                 SaveDb();
             }
+        }
+
+        private void SetDefaultSettings()
+        {
+            ConfidenceThreshold = 50;
+            FaceConfidenceThreshold = 50;
         }
 
         public void SaveDb()
@@ -58,6 +70,7 @@ namespace NoxVision
             var db = new Dictionary<string, string>();
 
             db.Add(nameof(ConfidenceThreshold), ConfidenceThreshold.ToString());
+            db.Add(nameof(FaceConfidenceThreshold), FaceConfidenceThreshold.ToString());
 
             var contents = "";
             foreach (var item in db)

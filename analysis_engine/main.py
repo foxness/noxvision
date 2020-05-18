@@ -28,6 +28,7 @@ ap.add_argument("-i", "--input", type = str, help = "path to input video file", 
 ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = 'output.avi')
 ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
 ap.add_argument("-oct", "--objectconfidencethreshold", type = int, help = "object detection confidence threshold", required = False, default = 50)
+ap.add_argument("-fct", "--faceconfidencethreshold", type = int, help = "face detection confidence threshold", required = False, default = 50)
 
 args = vars(ap.parse_args())
 
@@ -37,6 +38,7 @@ input_video = args['input']
 output_video = args['outputvideo']
 output_analysis = args['outputanalysis']
 confidence_threshold = args['objectconfidencethreshold'] / 100.0
+face_confidence_threshold = args['faceconfidencethreshold'] / 100.0
 
 # ---------------------------------------------------------------------------
 
@@ -59,7 +61,7 @@ def main():
     frame_width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    engine = Engine(frame_width, frame_height, confidence_threshold = confidence_threshold)
+    engine = Engine(frame_width, frame_height, confidence_threshold = confidence_threshold, face_confidence_threshold = face_confidence_threshold)
     writer = None
     frames_processed = 0
 

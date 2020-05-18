@@ -30,8 +30,12 @@ namespace NoxVision
 
         public void LaunchAndReadProgressFile(IProgress<int> progress)
         {
-            var confidenceThreshold = new SettingsDb().ConfidenceThreshold;
-            var process = LaunchEngine(confidenceThreshold);
+            var settings = new SettingsDb();
+
+            var confidenceThreshold = settings.ConfidenceThreshold;
+            var faceConfidenceThreshold = settings.FaceConfidenceThreshold;
+
+            var process = LaunchEngine(confidenceThreshold, faceConfidenceThreshold);
 
             var progressFile = Path.Combine(analysisEngineDir, progressFilename);
             while (!process.HasExited)
@@ -65,11 +69,11 @@ namespace NoxVision
             Close();
         }
 
-        private Process LaunchEngine(int confidenceThreshold)
+        private Process LaunchEngine(int confidenceThreshold, int faceConfidenceThreshold)
         {
             var process = new Process();
             process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
-            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold}";
+            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold} -fct {faceConfidenceThreshold}";
             process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.UseShellExecute = false;

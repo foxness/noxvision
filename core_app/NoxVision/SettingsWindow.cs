@@ -26,21 +26,39 @@ namespace NoxVision
             confidenceLabel.Text = settings.ConfidenceThreshold.ToString();
         }
 
+        private void UpdateFaceConfidenceLabel()
+        {
+            faceConfidenceLabel.Text = settings.FaceConfidenceThreshold.ToString();
+        }
+
         private void SetConfidenceThreshold()
         {
             confidenceBar.Value = settings.ConfidenceThreshold;
             UpdateConfidenceLabel();
         }
 
+        private void SetFaceConfidenceThreshold()
+        {
+            faceConfidenceBar.Value = settings.FaceConfidenceThreshold;
+            UpdateFaceConfidenceLabel();
+        }
+
         private void SettingsWindow_Load(Object sender, EventArgs e)
         {
             SetConfidenceThreshold();
+            SetFaceConfidenceThreshold();
         }
 
         private void confidenceBar_ValueChanged(Object sender, EventArgs e)
         {
             settings.ConfidenceThreshold = confidenceBar.Value;
             UpdateConfidenceLabel();
+        }
+
+        private void faceConfidenceBar_ValueChanged(Object sender, EventArgs e)
+        {
+            settings.FaceConfidenceThreshold = faceConfidenceBar.Value;
+            UpdateFaceConfidenceLabel();
         }
 
         private void SettingsWindow_FormClosing(Object sender, FormClosingEventArgs e)

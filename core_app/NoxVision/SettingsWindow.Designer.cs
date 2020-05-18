@@ -31,7 +31,11 @@
             this.confidenceTextLabel = new System.Windows.Forms.Label();
             this.confidenceBar = new System.Windows.Forms.TrackBar();
             this.confidenceLabel = new System.Windows.Forms.Label();
+            this.faceConfidenceTextLabel = new System.Windows.Forms.Label();
+            this.faceConfidenceBar = new System.Windows.Forms.TrackBar();
+            this.faceConfidenceLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.confidenceBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.faceConfidenceBar)).BeginInit();
             this.SuspendLayout();
             // 
             // confidenceTextLabel
@@ -39,9 +43,9 @@
             this.confidenceTextLabel.AutoSize = true;
             this.confidenceTextLabel.Location = new System.Drawing.Point(12, 22);
             this.confidenceTextLabel.Name = "confidenceTextLabel";
-            this.confidenceTextLabel.Size = new System.Drawing.Size(141, 13);
+            this.confidenceTextLabel.Size = new System.Drawing.Size(140, 13);
             this.confidenceTextLabel.TabIndex = 0;
-            this.confidenceTextLabel.Text = "Object detection confidence";
+            this.confidenceTextLabel.Text = "Object confidence threshold";
             // 
             // confidenceBar
             // 
@@ -63,11 +67,43 @@
             this.confidenceLabel.Text = "50";
             this.confidenceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // faceConfidenceTextLabel
+            // 
+            this.faceConfidenceTextLabel.AutoSize = true;
+            this.faceConfidenceTextLabel.Location = new System.Drawing.Point(12, 73);
+            this.faceConfidenceTextLabel.Name = "faceConfidenceTextLabel";
+            this.faceConfidenceTextLabel.Size = new System.Drawing.Size(133, 13);
+            this.faceConfidenceTextLabel.TabIndex = 3;
+            this.faceConfidenceTextLabel.Text = "Face confidence threshold";
+            // 
+            // faceConfidenceBar
+            // 
+            this.faceConfidenceBar.Location = new System.Drawing.Point(160, 67);
+            this.faceConfidenceBar.Maximum = 100;
+            this.faceConfidenceBar.Name = "faceConfidenceBar";
+            this.faceConfidenceBar.Size = new System.Drawing.Size(188, 45);
+            this.faceConfidenceBar.TabIndex = 4;
+            this.faceConfidenceBar.Value = 50;
+            this.faceConfidenceBar.ValueChanged += new System.EventHandler(this.faceConfidenceBar_ValueChanged);
+            // 
+            // faceConfidenceLabel
+            // 
+            this.faceConfidenceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.faceConfidenceLabel.Location = new System.Drawing.Point(352, 67);
+            this.faceConfidenceLabel.Name = "faceConfidenceLabel";
+            this.faceConfidenceLabel.Size = new System.Drawing.Size(40, 23);
+            this.faceConfidenceLabel.TabIndex = 5;
+            this.faceConfidenceLabel.Text = "50";
+            this.faceConfidenceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 321);
+            this.Controls.Add(this.faceConfidenceLabel);
+            this.Controls.Add(this.faceConfidenceBar);
+            this.Controls.Add(this.faceConfidenceTextLabel);
             this.Controls.Add(this.confidenceLabel);
             this.Controls.Add(this.confidenceBar);
             this.Controls.Add(this.confidenceTextLabel);
@@ -78,6 +114,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.confidenceBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.faceConfidenceBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -88,5 +125,8 @@
         private System.Windows.Forms.Label confidenceTextLabel;
         private System.Windows.Forms.TrackBar confidenceBar;
         private System.Windows.Forms.Label confidenceLabel;
+        private System.Windows.Forms.Label faceConfidenceTextLabel;
+        private System.Windows.Forms.TrackBar faceConfidenceBar;
+        private System.Windows.Forms.Label faceConfidenceLabel;
     }
 }
