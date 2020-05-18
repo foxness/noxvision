@@ -3,6 +3,7 @@ using Accord.Video.FFMPEG;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -216,6 +217,24 @@ namespace NoxVision
             }
         }
 
+        private Bitmap Subregion(Bitmap orig, int sx, int sy, int ex, int ey)
+        {
+            var w = ex - sx;
+            var h = ey - sy;
+
+            var output = new Bitmap(w, h);
+            for (var x = 0; x < w; x++)
+            {
+                for (var y = 0; y < h; y++)
+                {
+                    var pixel = orig.GetPixel(sx + x, sy + y);
+                    output.SetPixel(x, y, pixel);
+                }
+            }
+
+            return output;
+        }
+
         public void Draw(Graphics g)
         {
             if (!videoLoaded)
@@ -226,6 +245,14 @@ namespace NoxVision
             var frame = reader.ReadVideoFrame(currentFrame);
             if (frame != null)
             {
+                //int i = 0;
+                //foreach (var face in analysisInfo.frames[currentFrame].faces)
+                //{
+                //    var faceimg = Subregion(frame, face.rect[0], face.rect[1], face.rect[2], face.rect[3]);
+                //    faceimg.Save(Path.Combine(@"C:\Users\Rivershy\Desktop\asdy\", $"{face.cluster}-{currentFrame}-{i}.jpg"));
+                //    i++;
+                //}
+
                 DrawFrame(g, frame);
                 frame.Dispose();
                 Update();
