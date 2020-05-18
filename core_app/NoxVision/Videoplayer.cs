@@ -38,6 +38,26 @@ namespace NoxVision
         private Brush brush;
 
         public bool DrawPerson { get; set; } = true;
+        public bool DrawBackground { get; set; } = true;
+        public bool DrawAeroplane { get; set; } = true;
+        public bool DrawBicycle { get; set; } = true;
+        public bool DrawBird { get; set; } = true;
+        public bool DrawBoat { get; set; } = true;
+        public bool DrawBottle { get; set; } = true;
+        public bool DrawBus { get; set; } = true;
+        public bool DrawCar { get; set; } = true;
+        public bool DrawCat { get; set; } = true;
+        public bool DrawChair { get; set; } = true;
+        public bool DrawCow { get; set; } = true;
+        public bool DrawDiningtable { get; set; } = true;
+        public bool DrawDog { get; set; } = true;
+        public bool DrawHorse { get; set; } = true;
+        public bool DrawMotorbike { get; set; } = true;
+        public bool DrawPottedplant { get; set; } = true;
+        public bool DrawSheep { get; set; } = true;
+        public bool DrawSofa { get; set; } = true;
+        public bool DrawTrain { get; set; } = true;
+        public bool DrawTv { get; set; } = true;
 
         public int VideoWidth { get; private set; }
         public int VideoHeight { get; private set; }
@@ -73,7 +93,27 @@ namespace NoxVision
         public void LoadSettings(SettingsDb s)
         {
             DrawPerson = s.DrawPerson;
-        }
+            DrawBackground = s.DrawBackground;
+            DrawAeroplane = s.DrawAeroplane;
+            DrawBicycle = s.DrawBicycle;
+            DrawBird = s.DrawBird;
+            DrawBoat = s.DrawBoat;
+            DrawBottle = s.DrawBottle;
+            DrawBus = s.DrawBus;
+            DrawCar = s.DrawCar;
+            DrawCat = s.DrawCat;
+            DrawChair = s.DrawChair;
+            DrawCow = s.DrawCow;
+            DrawDiningtable = s.DrawDiningtable;
+            DrawDog = s.DrawDog;
+            DrawHorse = s.DrawHorse;
+            DrawMotorbike = s.DrawMotorbike;
+            DrawPottedplant = s.DrawPottedplant;
+            DrawSheep = s.DrawSheep;
+            DrawSofa = s.DrawSofa;
+            DrawTrain = s.DrawTrain;
+            DrawTv = s.DrawTv;
+    }
 
         public void SetProgress(double progress)
         {
@@ -196,7 +236,26 @@ namespace NoxVision
 
             foreach (var obj in cf.objs)
             {
-                if (obj.label == Label.person && !DrawPerson)
+                if ((obj.label == Label.person && !DrawPerson) ||
+                    (obj.label == Label.background && !DrawBackground) ||
+                    (obj.label == Label.aeroplane && !DrawAeroplane) ||
+                    (obj.label == Label.bicycle && !DrawBicycle) ||
+                    (obj.label == Label.bird && !DrawBird) ||
+                    (obj.label == Label.boat && !DrawBoat) ||
+                    (obj.label == Label.bus && !DrawBus) ||
+                    (obj.label == Label.car && !DrawCar) ||
+                    (obj.label == Label.cat && !DrawCat) ||
+                    (obj.label == Label.chair && !DrawChair) ||
+                    (obj.label == Label.cow && !DrawCow) ||
+                    (obj.label == Label.diningtable && !DrawDiningtable) ||
+                    (obj.label == Label.dog && !DrawDog) ||
+                    (obj.label == Label.horse && !DrawHorse) ||
+                    (obj.label == Label.motorbike && !DrawMotorbike) ||
+                    (obj.label == Label.pottedplant && !DrawPottedplant) ||
+                    (obj.label == Label.sheep && !DrawSheep) ||
+                    (obj.label == Label.sofa && !DrawSofa) ||
+                    (obj.label == Label.train && !DrawTrain) ||
+                    (obj.label == Label.tvmonitor && !DrawTv))
                 {
                     continue;
                 }
