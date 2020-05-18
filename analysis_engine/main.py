@@ -137,6 +137,7 @@ def main():
         cv2.destroyAllWindows()
     
     if output_analysis:
+        analyzer.analyze()
         serialized = analyzer.serialize()
         file = open(output_analysis, 'w')
         file.write(serialized)

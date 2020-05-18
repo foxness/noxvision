@@ -13,16 +13,33 @@ class FaceClusterer:
         self.dbscan = DBSCAN(eps = eps, min_samples = min_samples)
     
     def get_clusters(self):
-        return self.dbscan.fit_predict(self.faces)
+        return self.dbscan.fit_predict(self.faces).tolist()
 
 class Analyzer:
     def __init__(self):
+        self.face_clusterer = FaceClusterer()
         self.objects = []
         self.faces = []
     
     def add_frame(self, objs, faces):
         self.objects.append(objs)
         self.faces.append(faces)
+    
+    def cluster_faces(self):
+        faces = []
+        for frame in self.faces:
+            for face in frame:
+                faces.append(face)
+        
+        embeddings = [face.embedding for face in faces]
+        self.face_clusterer.faces = embeddings
+        clusters = self.face_clusterer.get_clusters()
+
+        for (i, face) in enumerate(faces):
+            face.cluster = clusters[i]
+    
+    def analyze(self):
+        self.cluster_faces()
     
     def serialize(self):
         contents = { 'frames': [] }
@@ -34,7 +51,7 @@ class Analyzer:
                 frame['objs'].append(serialized_obj)
             
             for face in faces:
-                serialized_face = { 'embedding': face.embedding.tolist(), 'rect': face.rect.tolist() }
+                serialized_face = { 'embedding': face.embedding.tolist(), 'rect': face.rect.tolist(), 'cluster': face.cluster }
                 frame['faces'].append(serialized_face)
             
             contents['frames'].append(frame)
@@ -64,6 +81,7 @@ class Analyzer:
                 face = Face()
                 face.embedding = np.array(sface['embedding'])
                 face.rect = sface['rect']
+                face.cluster = sface['cluster']
 
                 faces.append(face)
             
@@ -205,6 +223,7 @@ class Face:
     def __init__(self):
         self.rect = None
         self.embedding = None
+        self.cluster = None
 
 class Engine:
     def __init__(self, width, height, detection_period = 30, confidence_threshold = 0.5, face_confidence_threshold = 0.5):

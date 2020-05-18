@@ -25,6 +25,8 @@ namespace NoxVision
     {
         public IList<double> embedding { get; set; }
         public IList<int> rect { get; set; }
+
+        public int cluster { get; set; }
     }
 
     public class Frame
