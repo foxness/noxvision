@@ -237,5 +237,15 @@ namespace NoxVision
                 SetPlayerProgress(e);
             }
         }
+
+        private void exitItem_Click(Object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void settingsItem_Click(Object sender, EventArgs e)
+        {
+
+        }
     }
 }
