@@ -45,6 +45,7 @@
             this.ClientSize = new System.Drawing.Size(422, 190);
             this.Controls.Add(this.progressBar);
             this.Name = "AnalysisWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Analyzing...";
             this.Load += new System.EventHandler(this.AnalysisWindow_Load);
             this.ResumeLayout(false);
