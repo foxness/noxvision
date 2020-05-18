@@ -5,6 +5,15 @@ import imutils
 import json
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
+from sklearn.cluster import DBSCAN
+
+class FaceClusterer:
+    def __init__(self, eps = 0.56, min_samples = 2):
+        self.faces = []
+        self.dbscan = DBSCAN(eps = eps, min_samples = min_samples)
+    
+    def get_clusters(self):
+        return self.dbscan.fit_predict(self.faces)
 
 class Analyzer:
     def __init__(self):
@@ -53,7 +62,7 @@ class Analyzer:
             faces = []
             for sface in sfaces:
                 face = Face()
-                face.embedding = sface['embedding']
+                face.embedding = np.array(sface['embedding'])
                 face.rect = sface['rect']
 
                 faces.append(face)
