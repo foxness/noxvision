@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.confidenceTextLabel = new System.Windows.Forms.Label();
             this.confidenceBar = new System.Windows.Forms.TrackBar();
             this.confidenceLabel = new System.Windows.Forms.Label();
@@ -108,6 +109,7 @@
             this.Controls.Add(this.confidenceBar);
             this.Controls.Add(this.confidenceTextLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";

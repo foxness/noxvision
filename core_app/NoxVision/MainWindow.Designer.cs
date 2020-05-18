@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.playerControl = new System.Windows.Forms.PictureBox();
-            this.playButton = new System.Windows.Forms.PictureBox();
-            this.track = new System.Windows.Forms.PictureBox();
             this.exitItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playerControl = new System.Windows.Forms.PictureBox();
+            this.playButton = new System.Windows.Forms.PictureBox();
+            this.track = new System.Windows.Forms.PictureBox();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).BeginInit();
@@ -66,9 +67,31 @@
             // openMenuItem
             // 
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openMenuItem.Text = "Open";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
+            // 
+            // exitItem
+            // 
+            this.exitItem.Name = "exitItem";
+            this.exitItem.Size = new System.Drawing.Size(103, 22);
+            this.exitItem.Text = "Exit";
+            this.exitItem.Click += new System.EventHandler(this.exitItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // settingsItem
+            // 
+            this.settingsItem.Name = "settingsItem";
+            this.settingsItem.Size = new System.Drawing.Size(116, 22);
+            this.settingsItem.Text = "Settings";
+            this.settingsItem.Click += new System.EventHandler(this.settingsItem_Click);
             // 
             // playerControl
             // 
@@ -102,28 +125,6 @@
             this.track.MouseMove += new System.Windows.Forms.MouseEventHandler(this.track_MouseMove);
             this.track.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_MouseUp);
             // 
-            // exitItem
-            // 
-            this.exitItem.Name = "exitItem";
-            this.exitItem.Size = new System.Drawing.Size(180, 22);
-            this.exitItem.Text = "Exit";
-            this.exitItem.Click += new System.EventHandler(this.exitItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // settingsItem
-            // 
-            this.settingsItem.Name = "settingsItem";
-            this.settingsItem.Size = new System.Drawing.Size(180, 22);
-            this.settingsItem.Text = "Settings";
-            this.settingsItem.Click += new System.EventHandler(this.settingsItem_Click);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,6 +134,7 @@
             this.Controls.Add(this.playButton);
             this.Controls.Add(this.playerControl);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "MainWindow";
