@@ -24,6 +24,7 @@ namespace NoxVision
         private bool mouseDown;
 
         private AnalysisWindow aw;
+        private SettingsWindow sw;
 
         private string videoFilepath;
         private AnalysisInfo analysisInfo;
@@ -36,8 +37,11 @@ namespace NoxVision
         {
             InitializeComponent();
 
-            mouseDown = false;
             aw = new AnalysisWindow();
+            sw = new SettingsWindow();
+
+            mouseDown = false;
+            
             blackBrush = new SolidBrush(Color.Black);
             blueBrush = new SolidBrush(Color.Blue);
 
@@ -245,7 +249,7 @@ namespace NoxVision
 
         private void settingsItem_Click(Object sender, EventArgs e)
         {
-
+            sw.ShowDialog();
         }
     }
 }
