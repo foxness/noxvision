@@ -91,7 +91,7 @@ class Serializer:
         return json.dumps(self.contents)
 
 class Detector:
-    def __init__(self, width, height, confidence_threshold = 0.4):
+    def __init__(self, width, height, confidence_threshold = 0.5):
         self.prototxt_path = 'models\\object_detector_model.prototxt'
         self.model_path = 'models\\object_detector_model.caffemodel'
 
@@ -167,7 +167,7 @@ class Face:
         self.embedding = None
 
 class Engine:
-    def __init__(self, width, height, detection_period = 30):
+    def __init__(self, width, height, detection_period = 30, confidence_threshold = 0.5):
         self.orig_width = width
         self.orig_height = height
 
@@ -176,6 +176,7 @@ class Engine:
         self.scale = None
 
         self.detection_period = detection_period
+        self.confidence_threshold = confidence_threshold
         self.frames_processed = 0
 
         self.nextId = 0

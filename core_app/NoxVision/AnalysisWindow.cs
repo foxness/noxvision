@@ -28,9 +28,10 @@ namespace NoxVision
             InitializeComponent();
         }
 
-        public void DoWork(IProgress<int> progress)
+        public void LaunchAndReadProgressFile(IProgress<int> progress)
         {
-            var process = LaunchProcess();
+            var confidenceThreshold = new SettingsDb().ConfidenceThreshold;
+            var process = LaunchEngine(confidenceThreshold);
 
             var progressFile = Path.Combine(analysisEngineDir, progressFilename);
             while (!process.HasExited)
@@ -49,7 +50,7 @@ namespace NoxVision
             // progress.Report(progressBar.Maximum);
         }
 
-        private async void LaunchEngine()
+        private async void LaunchEngineLoop()
         {
             progressBar.Value = 0;
             var progress = new Progress<int>(v =>
@@ -57,18 +58,18 @@ namespace NoxVision
                 progressBar.Value = v;
             });
 
-            await Task.Run(() => DoWork(progress));
+            await Task.Run(() => LaunchAndReadProgressFile(progress));
 
             DialogResult = DialogResult.OK;
             OutputAnalysisFilepath = Path.Combine(analysisEngineDir, analysisFilename);
             Close();
         }
 
-        private Process LaunchProcess()
+        private Process LaunchEngine(int confidenceThreshold)
         {
             var process = new Process();
             process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
-            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json";
+            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold}";
             process.StartInfo.WorkingDirectory = analysisEngineDir;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.UseShellExecute = false;
@@ -80,7 +81,7 @@ namespace NoxVision
 
         private void AnalysisWindow_Load(object sender, EventArgs e)
         {
-            LaunchEngine();
+            LaunchEngineLoop();
         }
     }
 }
