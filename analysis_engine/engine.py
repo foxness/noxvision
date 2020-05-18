@@ -31,6 +31,34 @@ class Analyzer:
             contents['frames'].append(frame)
         
         return json.dumps(contents)
+    
+    def deserialize(self, raw):
+        self.__init__()
+
+        jsn = json.loads(raw)
+        for sframe in jsn['frames']:
+            sobjs = sframe['objs']
+            objs = []
+            for sobj in sobjs:
+                obj = RecognizedObject()
+                obj.rect = sobj['rect']
+                obj.id = sobj['id']
+                obj.label = sobj['label']
+
+                objs.append(obj)
+            
+            self.objects.append(objs)
+
+            sfaces = sframe['faces']
+            faces = []
+            for sface in sfaces:
+                face = Face()
+                face.embedding = sface['embedding']
+                face.rect = sface['rect']
+
+                faces.append(face)
+            
+            self.faces.append(faces)
 
 class FaceRecognizer:
     def __init__(self, confidence_threshold = 0.4):
