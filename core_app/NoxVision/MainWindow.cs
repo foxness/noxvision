@@ -260,7 +260,20 @@ namespace NoxVision
 
         private void reportItem_Click(Object sender, EventArgs e)
         {
-            new ReportWindow().ShowDialog();
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Png Image|*.png";
+            sfd.Title = "Сохранение отчета";
+
+            // REMOVE ON PRODUCTION
+            sfd.FileName = @"C:\Users\Rivershy\Desktop\asd.png";
+
+            sfd.ShowDialog();
+
+            if (sfd.FileName != "")
+            {
+                var rw = new ReportWindow(sfd.FileName, videoFilepath, analysisInfo);
+                rw.ShowDialog();
+            }
         }
     }
 }
