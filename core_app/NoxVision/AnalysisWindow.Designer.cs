@@ -34,7 +34,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 80);
+            this.progressBar.Location = new System.Drawing.Point(12, 45);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(398, 23);
             this.progressBar.TabIndex = 0;
@@ -43,12 +43,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 190);
+            this.ClientSize = new System.Drawing.Size(422, 122);
             this.Controls.Add(this.progressBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AnalysisWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Analyzing...";
+            this.Text = "Анализ видео";
             this.Load += new System.EventHandler(this.AnalysisWindow_Load);
             this.ResumeLayout(false);
 

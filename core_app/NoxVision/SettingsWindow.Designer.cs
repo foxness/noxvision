@@ -66,13 +66,13 @@
             this.confidenceTextLabel.AutoSize = true;
             this.confidenceTextLabel.Location = new System.Drawing.Point(12, 22);
             this.confidenceTextLabel.Name = "confidenceTextLabel";
-            this.confidenceTextLabel.Size = new System.Drawing.Size(140, 13);
+            this.confidenceTextLabel.Size = new System.Drawing.Size(168, 13);
             this.confidenceTextLabel.TabIndex = 0;
-            this.confidenceTextLabel.Text = "Object confidence threshold";
+            this.confidenceTextLabel.Text = "Порог достоверности объектов";
             // 
             // confidenceBar
             // 
-            this.confidenceBar.Location = new System.Drawing.Point(160, 16);
+            this.confidenceBar.Location = new System.Drawing.Point(183, 16);
             this.confidenceBar.Maximum = 100;
             this.confidenceBar.Name = "confidenceBar";
             this.confidenceBar.Size = new System.Drawing.Size(188, 45);
@@ -83,7 +83,7 @@
             // confidenceLabel
             // 
             this.confidenceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.confidenceLabel.Location = new System.Drawing.Point(352, 15);
+            this.confidenceLabel.Location = new System.Drawing.Point(375, 15);
             this.confidenceLabel.Name = "confidenceLabel";
             this.confidenceLabel.Size = new System.Drawing.Size(40, 23);
             this.confidenceLabel.TabIndex = 2;
@@ -95,13 +95,13 @@
             this.faceConfidenceTextLabel.AutoSize = true;
             this.faceConfidenceTextLabel.Location = new System.Drawing.Point(12, 73);
             this.faceConfidenceTextLabel.Name = "faceConfidenceTextLabel";
-            this.faceConfidenceTextLabel.Size = new System.Drawing.Size(133, 13);
+            this.faceConfidenceTextLabel.Size = new System.Drawing.Size(144, 13);
             this.faceConfidenceTextLabel.TabIndex = 3;
-            this.faceConfidenceTextLabel.Text = "Face confidence threshold";
+            this.faceConfidenceTextLabel.Text = "Порог достоверности лица";
             // 
             // faceConfidenceBar
             // 
-            this.faceConfidenceBar.Location = new System.Drawing.Point(160, 67);
+            this.faceConfidenceBar.Location = new System.Drawing.Point(183, 67);
             this.faceConfidenceBar.Maximum = 100;
             this.faceConfidenceBar.Name = "faceConfidenceBar";
             this.faceConfidenceBar.Size = new System.Drawing.Size(188, 45);
@@ -112,7 +112,7 @@
             // faceConfidenceLabel
             // 
             this.faceConfidenceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.faceConfidenceLabel.Location = new System.Drawing.Point(352, 67);
+            this.faceConfidenceLabel.Location = new System.Drawing.Point(375, 67);
             this.faceConfidenceLabel.Name = "faceConfidenceLabel";
             this.faceConfidenceLabel.Size = new System.Drawing.Size(40, 23);
             this.faceConfidenceLabel.TabIndex = 5;
@@ -124,9 +124,9 @@
             this.personCheck.AutoSize = true;
             this.personCheck.Location = new System.Drawing.Point(15, 138);
             this.personCheck.Name = "personCheck";
-            this.personCheck.Size = new System.Drawing.Size(59, 17);
+            this.personCheck.Size = new System.Drawing.Size(70, 17);
             this.personCheck.TabIndex = 7;
-            this.personCheck.Text = "Person";
+            this.personCheck.Text = "Человек";
             this.personCheck.UseVisualStyleBackColor = true;
             this.personCheck.CheckedChanged += new System.EventHandler(this.personCheck_CheckedChanged);
             // 
@@ -135,18 +135,18 @@
             this.drawLabel.AutoSize = true;
             this.drawLabel.Location = new System.Drawing.Point(12, 112);
             this.drawLabel.Name = "drawLabel";
-            this.drawLabel.Size = new System.Drawing.Size(150, 13);
+            this.drawLabel.Size = new System.Drawing.Size(156, 13);
             this.drawLabel.TabIndex = 8;
-            this.drawLabel.Text = "Draw object recognition boxes";
+            this.drawLabel.Text = "Показывать рамки объектов";
             // 
             // aeroplaneCheck
             // 
             this.aeroplaneCheck.AutoSize = true;
             this.aeroplaneCheck.Location = new System.Drawing.Point(15, 162);
             this.aeroplaneCheck.Name = "aeroplaneCheck";
-            this.aeroplaneCheck.Size = new System.Drawing.Size(74, 17);
+            this.aeroplaneCheck.Size = new System.Drawing.Size(70, 17);
             this.aeroplaneCheck.TabIndex = 9;
-            this.aeroplaneCheck.Text = "Aeroplane";
+            this.aeroplaneCheck.Text = "Самолет";
             this.aeroplaneCheck.UseVisualStyleBackColor = true;
             this.aeroplaneCheck.CheckedChanged += new System.EventHandler(this.aeroplaneCheck_CheckedChanged);
             // 
@@ -155,9 +155,9 @@
             this.bicycleCheck.AutoSize = true;
             this.bicycleCheck.Location = new System.Drawing.Point(15, 186);
             this.bicycleCheck.Name = "bicycleCheck";
-            this.bicycleCheck.Size = new System.Drawing.Size(60, 17);
+            this.bicycleCheck.Size = new System.Drawing.Size(81, 17);
             this.bicycleCheck.TabIndex = 10;
-            this.bicycleCheck.Text = "Bicycle";
+            this.bicycleCheck.Text = "Велосипед";
             this.bicycleCheck.UseVisualStyleBackColor = true;
             this.bicycleCheck.CheckedChanged += new System.EventHandler(this.bicycleCheck_CheckedChanged);
             // 
@@ -166,9 +166,9 @@
             this.birdCheck.AutoSize = true;
             this.birdCheck.Location = new System.Drawing.Point(15, 210);
             this.birdCheck.Name = "birdCheck";
-            this.birdCheck.Size = new System.Drawing.Size(44, 17);
+            this.birdCheck.Size = new System.Drawing.Size(57, 17);
             this.birdCheck.TabIndex = 11;
-            this.birdCheck.Text = "Bird";
+            this.birdCheck.Text = "Птица";
             this.birdCheck.UseVisualStyleBackColor = true;
             this.birdCheck.CheckedChanged += new System.EventHandler(this.birdCheck_CheckedChanged);
             // 
@@ -177,9 +177,9 @@
             this.boatCheck.AutoSize = true;
             this.boatCheck.Location = new System.Drawing.Point(15, 234);
             this.boatCheck.Name = "boatCheck";
-            this.boatCheck.Size = new System.Drawing.Size(48, 17);
+            this.boatCheck.Size = new System.Drawing.Size(58, 17);
             this.boatCheck.TabIndex = 12;
-            this.boatCheck.Text = "Boat";
+            this.boatCheck.Text = "Лодка";
             this.boatCheck.UseVisualStyleBackColor = true;
             this.boatCheck.CheckedChanged += new System.EventHandler(this.boatCheck_CheckedChanged);
             // 
@@ -188,9 +188,9 @@
             this.bottleCheck.AutoSize = true;
             this.bottleCheck.Location = new System.Drawing.Point(15, 258);
             this.bottleCheck.Name = "bottleCheck";
-            this.bottleCheck.Size = new System.Drawing.Size(53, 17);
+            this.bottleCheck.Size = new System.Drawing.Size(69, 17);
             this.bottleCheck.TabIndex = 13;
-            this.bottleCheck.Text = "Bottle";
+            this.bottleCheck.Text = "Бутылка";
             this.bottleCheck.UseVisualStyleBackColor = true;
             this.bottleCheck.CheckedChanged += new System.EventHandler(this.bottleCheck_CheckedChanged);
             // 
@@ -199,9 +199,9 @@
             this.busCheck.AutoSize = true;
             this.busCheck.Location = new System.Drawing.Point(15, 282);
             this.busCheck.Name = "busCheck";
-            this.busCheck.Size = new System.Drawing.Size(44, 17);
+            this.busCheck.Size = new System.Drawing.Size(67, 17);
             this.busCheck.TabIndex = 14;
-            this.busCheck.Text = "Bus";
+            this.busCheck.Text = "Автобус";
             this.busCheck.UseVisualStyleBackColor = true;
             this.busCheck.CheckedChanged += new System.EventHandler(this.busCheck_CheckedChanged);
             // 
@@ -210,9 +210,9 @@
             this.carCheck.AutoSize = true;
             this.carCheck.Location = new System.Drawing.Point(160, 138);
             this.carCheck.Name = "carCheck";
-            this.carCheck.Size = new System.Drawing.Size(42, 17);
+            this.carCheck.Size = new System.Drawing.Size(67, 17);
             this.carCheck.TabIndex = 15;
-            this.carCheck.Text = "Car";
+            this.carCheck.Text = "Машина";
             this.carCheck.UseVisualStyleBackColor = true;
             this.carCheck.CheckedChanged += new System.EventHandler(this.carCheck_CheckedChanged);
             // 
@@ -221,9 +221,9 @@
             this.catCheck.AutoSize = true;
             this.catCheck.Location = new System.Drawing.Point(160, 162);
             this.catCheck.Name = "catCheck";
-            this.catCheck.Size = new System.Drawing.Size(42, 17);
+            this.catCheck.Size = new System.Drawing.Size(59, 17);
             this.catCheck.TabIndex = 16;
-            this.catCheck.Text = "Cat";
+            this.catCheck.Text = "Кошка";
             this.catCheck.UseVisualStyleBackColor = true;
             this.catCheck.CheckedChanged += new System.EventHandler(this.catCheck_CheckedChanged);
             // 
@@ -232,9 +232,9 @@
             this.chairCheck.AutoSize = true;
             this.chairCheck.Location = new System.Drawing.Point(160, 186);
             this.chairCheck.Name = "chairCheck";
-            this.chairCheck.Size = new System.Drawing.Size(50, 17);
+            this.chairCheck.Size = new System.Drawing.Size(49, 17);
             this.chairCheck.TabIndex = 17;
-            this.chairCheck.Text = "Chair";
+            this.chairCheck.Text = "Стул";
             this.chairCheck.UseVisualStyleBackColor = true;
             this.chairCheck.CheckedChanged += new System.EventHandler(this.chairCheck_CheckedChanged);
             // 
@@ -243,9 +243,9 @@
             this.cowCheck.AutoSize = true;
             this.cowCheck.Location = new System.Drawing.Point(160, 210);
             this.cowCheck.Name = "cowCheck";
-            this.cowCheck.Size = new System.Drawing.Size(47, 17);
+            this.cowCheck.Size = new System.Drawing.Size(63, 17);
             this.cowCheck.TabIndex = 18;
-            this.cowCheck.Text = "Cow";
+            this.cowCheck.Text = "Корова";
             this.cowCheck.UseVisualStyleBackColor = true;
             this.cowCheck.CheckedChanged += new System.EventHandler(this.cowCheck_CheckedChanged);
             // 
@@ -254,9 +254,9 @@
             this.diningtableCheck.AutoSize = true;
             this.diningtableCheck.Location = new System.Drawing.Point(160, 234);
             this.diningtableCheck.Name = "diningtableCheck";
-            this.diningtableCheck.Size = new System.Drawing.Size(82, 17);
+            this.diningtableCheck.Size = new System.Drawing.Size(50, 17);
             this.diningtableCheck.TabIndex = 19;
-            this.diningtableCheck.Text = "Dining table";
+            this.diningtableCheck.Text = "Стол";
             this.diningtableCheck.UseVisualStyleBackColor = true;
             this.diningtableCheck.CheckedChanged += new System.EventHandler(this.diningtableCheck_CheckedChanged);
             // 
@@ -265,9 +265,9 @@
             this.dogCheck.AutoSize = true;
             this.dogCheck.Location = new System.Drawing.Point(160, 258);
             this.dogCheck.Name = "dogCheck";
-            this.dogCheck.Size = new System.Drawing.Size(46, 17);
+            this.dogCheck.Size = new System.Drawing.Size(63, 17);
             this.dogCheck.TabIndex = 20;
-            this.dogCheck.Text = "Dog";
+            this.dogCheck.Text = "Собака";
             this.dogCheck.UseVisualStyleBackColor = true;
             this.dogCheck.CheckedChanged += new System.EventHandler(this.dogCheck_CheckedChanged);
             // 
@@ -276,9 +276,9 @@
             this.horseCheck.AutoSize = true;
             this.horseCheck.Location = new System.Drawing.Point(160, 282);
             this.horseCheck.Name = "horseCheck";
-            this.horseCheck.Size = new System.Drawing.Size(54, 17);
+            this.horseCheck.Size = new System.Drawing.Size(66, 17);
             this.horseCheck.TabIndex = 21;
-            this.horseCheck.Text = "Horse";
+            this.horseCheck.Text = "Лошадь";
             this.horseCheck.UseVisualStyleBackColor = true;
             this.horseCheck.CheckedChanged += new System.EventHandler(this.horseCheck_CheckedChanged);
             // 
@@ -287,9 +287,9 @@
             this.motorbikeCheck.AutoSize = true;
             this.motorbikeCheck.Location = new System.Drawing.Point(287, 138);
             this.motorbikeCheck.Name = "motorbikeCheck";
-            this.motorbikeCheck.Size = new System.Drawing.Size(73, 17);
+            this.motorbikeCheck.Size = new System.Drawing.Size(76, 17);
             this.motorbikeCheck.TabIndex = 22;
-            this.motorbikeCheck.Text = "Motorbike";
+            this.motorbikeCheck.Text = "Мотоцикл";
             this.motorbikeCheck.UseVisualStyleBackColor = true;
             this.motorbikeCheck.CheckedChanged += new System.EventHandler(this.motorbikeCheck_CheckedChanged);
             // 
@@ -298,9 +298,9 @@
             this.pottedplantCheck.AutoSize = true;
             this.pottedplantCheck.Location = new System.Drawing.Point(287, 162);
             this.pottedplantCheck.Name = "pottedplantCheck";
-            this.pottedplantCheck.Size = new System.Drawing.Size(83, 17);
+            this.pottedplantCheck.Size = new System.Drawing.Size(123, 17);
             this.pottedplantCheck.TabIndex = 23;
-            this.pottedplantCheck.Text = "Potted plant";
+            this.pottedplantCheck.Text = "Растение в горшке";
             this.pottedplantCheck.UseVisualStyleBackColor = true;
             this.pottedplantCheck.CheckedChanged += new System.EventHandler(this.pottedplantCheck_CheckedChanged);
             // 
@@ -309,9 +309,9 @@
             this.sheepCheck.AutoSize = true;
             this.sheepCheck.Location = new System.Drawing.Point(287, 186);
             this.sheepCheck.Name = "sheepCheck";
-            this.sheepCheck.Size = new System.Drawing.Size(57, 17);
+            this.sheepCheck.Size = new System.Drawing.Size(52, 17);
             this.sheepCheck.TabIndex = 24;
-            this.sheepCheck.Text = "Sheep";
+            this.sheepCheck.Text = "Овца";
             this.sheepCheck.UseVisualStyleBackColor = true;
             this.sheepCheck.CheckedChanged += new System.EventHandler(this.sheepCheck_CheckedChanged);
             // 
@@ -320,9 +320,9 @@
             this.sofaCheck.AutoSize = true;
             this.sofaCheck.Location = new System.Drawing.Point(287, 210);
             this.sofaCheck.Name = "sofaCheck";
-            this.sofaCheck.Size = new System.Drawing.Size(48, 17);
+            this.sofaCheck.Size = new System.Drawing.Size(59, 17);
             this.sofaCheck.TabIndex = 25;
-            this.sofaCheck.Text = "Sofa";
+            this.sofaCheck.Text = "Диван";
             this.sofaCheck.UseVisualStyleBackColor = true;
             this.sofaCheck.CheckedChanged += new System.EventHandler(this.sofaCheck_CheckedChanged);
             // 
@@ -331,9 +331,9 @@
             this.trainCheck.AutoSize = true;
             this.trainCheck.Location = new System.Drawing.Point(287, 234);
             this.trainCheck.Name = "trainCheck";
-            this.trainCheck.Size = new System.Drawing.Size(50, 17);
+            this.trainCheck.Size = new System.Drawing.Size(58, 17);
             this.trainCheck.TabIndex = 26;
-            this.trainCheck.Text = "Train";
+            this.trainCheck.Text = "Поезд";
             this.trainCheck.UseVisualStyleBackColor = true;
             this.trainCheck.CheckedChanged += new System.EventHandler(this.trainCheck_CheckedChanged);
             // 
@@ -342,9 +342,9 @@
             this.tvCheck.AutoSize = true;
             this.tvCheck.Location = new System.Drawing.Point(287, 258);
             this.tvCheck.Name = "tvCheck";
-            this.tvCheck.Size = new System.Drawing.Size(40, 17);
+            this.tvCheck.Size = new System.Drawing.Size(81, 17);
             this.tvCheck.TabIndex = 27;
-            this.tvCheck.Text = "TV";
+            this.tvCheck.Text = "Телевизор";
             this.tvCheck.UseVisualStyleBackColor = true;
             this.tvCheck.CheckedChanged += new System.EventHandler(this.tvCheck_CheckedChanged);
             // 
@@ -353,9 +353,9 @@
             this.backgroundCheck.AutoSize = true;
             this.backgroundCheck.Location = new System.Drawing.Point(287, 282);
             this.backgroundCheck.Name = "backgroundCheck";
-            this.backgroundCheck.Size = new System.Drawing.Size(84, 17);
+            this.backgroundCheck.Size = new System.Drawing.Size(49, 17);
             this.backgroundCheck.TabIndex = 28;
-            this.backgroundCheck.Text = "Background";
+            this.backgroundCheck.Text = "Фон";
             this.backgroundCheck.UseVisualStyleBackColor = true;
             this.backgroundCheck.CheckedChanged += new System.EventHandler(this.backgroundCheck_CheckedChanged);
             // 
@@ -363,7 +363,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 321);
+            this.ClientSize = new System.Drawing.Size(429, 321);
             this.Controls.Add(this.backgroundCheck);
             this.Controls.Add(this.tvCheck);
             this.Controls.Add(this.trainCheck);
@@ -396,7 +396,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Settings";
+            this.Text = "Настройки";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingsWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.confidenceBar)).EndInit();

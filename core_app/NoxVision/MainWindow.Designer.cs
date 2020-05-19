@@ -61,21 +61,21 @@
             this.openMenuItem,
             this.exitItem});
             this.fileMenu.Name = "fileMenu";
-            this.fileMenu.Size = new System.Drawing.Size(37, 20);
-            this.fileMenu.Text = "File";
+            this.fileMenu.Size = new System.Drawing.Size(48, 20);
+            this.fileMenu.Text = "Файл";
             // 
             // openMenuItem
             // 
             this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openMenuItem.Text = "Open";
+            this.openMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openMenuItem.Text = "Открыть...";
             this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
             // exitItem
             // 
             this.exitItem.Name = "exitItem";
-            this.exitItem.Size = new System.Drawing.Size(103, 22);
-            this.exitItem.Text = "Exit";
+            this.exitItem.Size = new System.Drawing.Size(180, 22);
+            this.exitItem.Text = "Выход";
             this.exitItem.Click += new System.EventHandler(this.exitItem_Click);
             // 
             // toolsToolStripMenuItem
@@ -83,14 +83,14 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.toolsToolStripMenuItem.Text = "Инструменты";
             // 
             // settingsItem
             // 
             this.settingsItem.Name = "settingsItem";
-            this.settingsItem.Size = new System.Drawing.Size(116, 22);
-            this.settingsItem.Text = "Settings";
+            this.settingsItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsItem.Text = "Настройки";
             this.settingsItem.Click += new System.EventHandler(this.settingsItem_Click);
             // 
             // playerControl
