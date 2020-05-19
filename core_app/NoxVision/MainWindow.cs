@@ -261,27 +261,39 @@ namespace NoxVision
             new AboutWindow().ShowDialog();
         }
 
+        private async void temp()
+        {
+            var vfp = @"R:\my\drive\sync\things\projects\noxvisioncloud\asd.mp4";
+            var ai = await database.Get(vfp);
+            var rw = new ReportWindow(@"C:\Users\Rivershy\Desktop\asd.png", vfp, analysisInfo);
+            rw.ShowDialog();
+        }
+
         private void reportItem_Click(Object sender, EventArgs e)
         {
-            if (player.Playing)
-            {
-                PlayButtonClick(); // pause the video for report generation
-            }
+            //if (player.Playing)
+            //{
+            //    PlayButtonClick(); // pause the video for report generation
+            //}
 
-            var sfd = new SaveFileDialog();
-            sfd.Filter = "Png Image|*.png";
-            sfd.Title = "Сохранение отчета";
+            //var sfd = new SaveFileDialog();
+            //sfd.Filter = "Png Image|*.png";
+            //sfd.Title = "Сохранение отчета";
 
-            // REMOVE ON PRODUCTION
-            sfd.FileName = @"C:\Users\Rivershy\Desktop\asd.png";
+            //// REMOVE ON PRODUCTION
+            //sfd.FileName = @"C:\Users\Rivershy\Desktop\asd.png";
 
-            sfd.ShowDialog();
+            //sfd.ShowDialog();
 
-            if (sfd.FileName != "")
-            {
-                var rw = new ReportWindow(sfd.FileName, videoFilepath, analysisInfo);
-                rw.ShowDialog();
-            }
+            //if (sfd.FileName != "")
+            //{
+            //    var rw = new ReportWindow(sfd.FileName, videoFilepath, analysisInfo);
+            //    rw.ShowDialog();
+            //}
+
+            // -------------------------------------------------
+
+            temp();
         }
     }
 }

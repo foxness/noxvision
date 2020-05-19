@@ -92,7 +92,6 @@
             // 
             // reportItem
             // 
-            this.reportItem.Enabled = false;
             this.reportItem.Name = "reportItem";
             this.reportItem.Size = new System.Drawing.Size(190, 22);
             this.reportItem.Text = "Сгенерировать отчет";
