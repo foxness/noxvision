@@ -81,6 +81,7 @@ namespace NoxVision
         private void VideoplayerLoad()
         {
             player.Load(videoFilepath, analysisInfo);
+            reportItem.Enabled = true;
         }
 
         private void VideoplayerStart()
@@ -163,11 +164,16 @@ namespace NoxVision
             player.Unload();
         }
 
-        private void playButton_Click(Object sender, EventArgs e)
+        private void PlayButtonClick()
         {
             player.OnPlayButtonClick();
 
             UpdatePlayer();
+        }
+
+        private void playButton_Click(Object sender, EventArgs e)
+        {
+            PlayButtonClick();
         }
 
         private void playButton_Paint(Object sender, PaintEventArgs e)
@@ -260,6 +266,11 @@ namespace NoxVision
 
         private void reportItem_Click(Object sender, EventArgs e)
         {
+            if (player.Playing)
+            {
+                PlayButtonClick(); // pause the video for report generation
+            }
+
             var sfd = new SaveFileDialog();
             sfd.Filter = "Png Image|*.png";
             sfd.Title = "Сохранение отчета";

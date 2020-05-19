@@ -34,12 +34,12 @@
             this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutItem = new System.Windows.Forms.ToolStripMenuItem();
             this.track = new System.Windows.Forms.PictureBox();
             this.playButton = new System.Windows.Forms.PictureBox();
             this.playerControl = new System.Windows.Forms.PictureBox();
-            this.reportItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).BeginInit();
@@ -90,6 +90,14 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
             this.toolsToolStripMenuItem.Text = "Инструменты";
             // 
+            // reportItem
+            // 
+            this.reportItem.Enabled = false;
+            this.reportItem.Name = "reportItem";
+            this.reportItem.Size = new System.Drawing.Size(190, 22);
+            this.reportItem.Text = "Сгенерировать отчет";
+            this.reportItem.Click += new System.EventHandler(this.reportItem_Click);
+            // 
             // settingsItem
             // 
             this.settingsItem.Name = "settingsItem";
@@ -135,13 +143,6 @@
             this.playerControl.TabIndex = 2;
             this.playerControl.TabStop = false;
             this.playerControl.Paint += new System.Windows.Forms.PaintEventHandler(this.playerControl_Paint);
-            // 
-            // reportItem
-            // 
-            this.reportItem.Name = "reportItem";
-            this.reportItem.Size = new System.Drawing.Size(190, 22);
-            this.reportItem.Text = "Сгенерировать отчет";
-            this.reportItem.Click += new System.EventHandler(this.reportItem_Click);
             // 
             // MainWindow
             // 
