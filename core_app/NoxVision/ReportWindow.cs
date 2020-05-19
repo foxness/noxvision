@@ -22,6 +22,8 @@ namespace NoxVision
         {
             var report = rg.GenerateReport();
             report.Save(reportFilepath, ImageFormat.Png);
+
+            Close();
         }
     }
 }

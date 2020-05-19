@@ -16,9 +16,6 @@ namespace NoxVision
 {
     public partial class MainWindow : Form
     {
-        private static readonly int menuStripHeight = 27;
-        private static readonly int playerControlsHeight = 50;
-
         private Timer playerTimer;
         private Videoplayer player;
         private bool mouseDown;

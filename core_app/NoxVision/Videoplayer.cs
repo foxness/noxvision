@@ -20,7 +20,6 @@ namespace NoxVision
 
         private AnalysisInfo analysisInfo;
         private VideoFileReader reader;
-        private DateTime startTime;
         private int currentFrame;
         private bool videoLoaded;
 
