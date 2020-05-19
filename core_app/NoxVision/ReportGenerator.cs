@@ -114,22 +114,46 @@ namespace NoxVision
             DrawSector(g, niceBrushes[0], x, y, r, 1f);
 
             var centerAngles = new List<double>();
-            var categories = stats.Keys.OrderBy(k => stats[k]);
-            int i = 1;
+            var categories = stats.Keys.OrderBy(k => stats[k]).ToList();
             float buildup = 0;
-            foreach (var category in categories)
+
+            for (int i = 0; i < categories.Count; i++)
             {
+                var category = categories[i];
+                var brush = niceBrushes[i + 1];
+
                 var percentage = (float)stats[category];
-                DrawSector(g, niceBrushes[i], x, y, r, 1 - (percentage + buildup));
+                DrawSector(g, brush, x, y, r, 1 - (percentage + buildup));
                 centerAngles.Add((1 - (buildup + percentage / 2)) * Math.PI * 2 - Math.PI / 2);
                 buildup += percentage;
-                i++;
             }
 
-            i = 0;
-            foreach (var category in categories)
+            var othersSum = stats.Keys.Where(k => stats[k] < 0.03).Select(k => stats[k]).Sum();
+
+            for (int i = 0; i < categories.Count + 1; i++)
             {
-                var angle = centerAngles[i];
+                double angle;
+                double percentage;
+                string category;
+                if (i == 0)
+                {
+                    angle = (1 - othersSum) * Math.PI * 2 - Math.PI / 2;
+                    percentage = othersSum;
+                    category = "others";
+                }
+                else
+                {
+                    angle = centerAngles[i - 1];
+
+                    category = categories[i - 1];
+                    percentage = stats[category];
+
+                    if (percentage < 0.03)
+                    {
+                        continue;
+                    }
+                }
+                
                 float sx = (float)(x + smallR * Math.Cos(angle));
                 float sy = (float)(y + smallR * Math.Sin(angle));
                 float bx = (float)(x + bigR * Math.Cos(angle));
@@ -142,10 +166,8 @@ namespace NoxVision
                 g.DrawLine(piePen, sx, sy, bx, by);
                 g.DrawLine(piePen, bx, by, tx, ty);
 
-                var str = $"{category} ({stats[category]:P2})";
+                var str = $"{category} ({percentage:P2})";
                 g.DrawString(str, pieFont, textBrush, bx + (direction == 1 ? 0 : -(str.Length * 12)), by - 40);
-
-                i++;
             }
         }
 
