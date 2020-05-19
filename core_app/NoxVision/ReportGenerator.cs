@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace NoxVision
 
         private Font headerFont;
         private Font pieFont;
+        private Font titleFont;
 
         private Pen piePen;
 
@@ -31,6 +33,7 @@ namespace NoxVision
 
             headerFont = new Font("Open Sans", 48, FontStyle.Bold);
             pieFont = new Font("Open Sans", 18, FontStyle.Regular);
+            titleFont = new Font("Open Sans", 24, FontStyle.Regular);
 
             piePen = new Pen(Color.White, 3);
 
@@ -194,15 +197,18 @@ namespace NoxVision
                 float bx = (float)(x + bigR * Math.Cos(angle));
                 float by = (float)(y + bigR * Math.Sin(angle));
 
+                var str = $"{category} ({percentage:P2})";
+                var strSize = g.MeasureString(str, pieFont);
+
                 var direction = Math.Abs(angle) < Math.PI / 2 ? 1 : -1;
-                float tx = bx + 100 * direction;
+                float tx = bx + strSize.Width * direction;
                 float ty = by;
 
                 g.DrawLine(piePen, sx, sy, bx, by);
                 g.DrawLine(piePen, bx, by, tx, ty);
 
-                var str = $"{category} ({percentage:P2})";
-                g.DrawString(str, pieFont, textBrush, bx + (direction == 1 ? 0 : -(str.Length * 12)), by - 40);
+                
+                g.DrawString(str, pieFont, textBrush, bx + (direction == 1 ? 0 : -strSize.Width + 5), by - strSize.Height);
             }
         }
 
