@@ -252,5 +252,10 @@ namespace NoxVision
             sw.ShowDialog();
             player.LoadSettings(new SettingsDb());
         }
+
+        private void aboutItem_Click(Object sender, EventArgs e)
+        {
+            new AboutWindow().ShowDialog();
+        }
     }
 }

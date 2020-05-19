@@ -38,6 +38,7 @@
             this.playerControl = new System.Windows.Forms.PictureBox();
             this.playButton = new System.Windows.Forms.PictureBox();
             this.track = new System.Windows.Forms.PictureBox();
+            this.aboutItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).BeginInit();
@@ -48,7 +49,8 @@
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.aboutItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(552, 24);
@@ -125,6 +127,13 @@
             this.track.MouseMove += new System.Windows.Forms.MouseEventHandler(this.track_MouseMove);
             this.track.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_MouseUp);
             // 
+            // aboutItem
+            // 
+            this.aboutItem.Name = "aboutItem";
+            this.aboutItem.Size = new System.Drawing.Size(94, 20);
+            this.aboutItem.Text = "О программе";
+            this.aboutItem.Click += new System.EventHandler(this.aboutItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -163,6 +172,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutItem;
     }
 }
 
