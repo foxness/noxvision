@@ -16,6 +16,9 @@ namespace NoxVision
         private static readonly int height = 4000;
 
         private Font headerFont;
+        private Font pieFont;
+
+        private Pen piePen;
 
         private Brush backgroundBrush;
         private Brush textBrush;
@@ -27,6 +30,9 @@ namespace NoxVision
             analysis = analysisInfo;
 
             headerFont = new Font("Open Sans", 48, FontStyle.Bold);
+            pieFont = new Font("Open Sans", 18, FontStyle.Regular);
+
+            piePen = new Pen(Color.White, 3);
 
             backgroundBrush = new SolidBrush(Color.FromArgb(17, 17, 17));
             textBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
@@ -101,10 +107,13 @@ namespace NoxVision
             int x = 500;
             int y = 650;
             int r = 230;
+            int smallR = 150;
+            int bigR = 300;
 
             var stats = GetStatCircle();
             DrawSector(g, niceBrushes[0], x, y, r, 1f);
 
+            var centerAngles = new List<double>();
             var categories = stats.Keys.OrderBy(k => stats[k]);
             int i = 1;
             float buildup = 0;
@@ -112,7 +121,30 @@ namespace NoxVision
             {
                 var percentage = (float)stats[category];
                 DrawSector(g, niceBrushes[i], x, y, r, 1 - (percentage + buildup));
+                centerAngles.Add((1 - (buildup + percentage / 2)) * Math.PI * 2 - Math.PI / 2);
                 buildup += percentage;
+                i++;
+            }
+
+            i = 0;
+            foreach (var category in categories)
+            {
+                var angle = centerAngles[i];
+                float sx = (float)(x + smallR * Math.Cos(angle));
+                float sy = (float)(y + smallR * Math.Sin(angle));
+                float bx = (float)(x + bigR * Math.Cos(angle));
+                float by = (float)(y + bigR * Math.Sin(angle));
+
+                var direction = Math.Abs(angle) < Math.PI / 2 ? 1 : -1;
+                float tx = bx + 100 * direction;
+                float ty = by;
+
+                g.DrawLine(piePen, sx, sy, bx, by);
+                g.DrawLine(piePen, bx, by, tx, ty);
+
+                var str = $"{category} ({stats[category]:P2})";
+                g.DrawString(str, pieFont, textBrush, bx + (direction == 1 ? 0 : -(str.Length * 12)), by - 40);
+
                 i++;
             }
         }
