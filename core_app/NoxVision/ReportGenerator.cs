@@ -14,13 +14,14 @@ namespace NoxVision
         private AnalysisInfo analysis;
 
         private static readonly int width = 1000;
-        private static readonly int height = 4000;
+        private static readonly int height = 2000;
 
         private Font headerFont;
         private Font pieFont;
         private Font titleFont;
 
         private Pen piePen;
+        private Pen titlePen;
 
         private Brush backgroundBrush;
         private Brush textBrush;
@@ -36,6 +37,7 @@ namespace NoxVision
             titleFont = new Font("Open Sans", 24, FontStyle.Regular);
 
             piePen = new Pen(Color.White, 3);
+            titlePen = new Pen(Color.FromArgb(147, 126, 243), 4);
 
             backgroundBrush = new SolidBrush(Color.FromArgb(17, 17, 17));
             textBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
@@ -62,41 +64,6 @@ namespace NoxVision
             DrawStatCircle(g);
 
             return report;
-        }
-
-        private string LabelToString(Label l)
-        {
-            //background, aeroplane, bicycle, bird, boat,
-            //bottle, bus, car, cat, chair, cow, diningtable,
-            //dog, horse, motorbike, person, pottedplant, sheep,
-            //sofa, train, tvmonitor
-
-            switch (l)
-            {
-                case Label.aeroplane: return "самолет";
-                case Label.background: return "фон";
-                case Label.bicycle: return "велосипед";
-                case Label.bird: return "птица";
-                case Label.boat: return "лодка";
-                case Label.bottle: return "бутылка";
-                case Label.bus: return "автобус";
-                case Label.car: return "машина";
-                case Label.cat: return "кошка";
-                case Label.chair: return "стул";
-                case Label.cow: return "корова";
-                case Label.diningtable: return "стол";
-                case Label.dog: return "собака";
-                case Label.horse: return "лошадь";
-                case Label.motorbike: return "мотоцикл";
-                case Label.person: return "человек";
-                case Label.pottedplant: return "растение в горшке";
-                case Label.sheep: return "овца";
-                case Label.sofa: return "диван";
-                case Label.train: return "поезд";
-                case Label.tvmonitor: return "телевизор";
-            }
-
-            return "неизвестно";
         }
 
         private Dictionary<string, double> GetStatCircle()
@@ -142,11 +109,12 @@ namespace NoxVision
 
         private void DrawStatCircle(Graphics g)
         {
-            int x = 500;
-            int y = 650;
+            int x = width / 2;
+            int y = 750;
             int r = 230;
             int smallR = 150;
             int bigR = 300;
+            int titleY = y - (800 - 370);
 
             var stats = GetStatCircle();
             DrawSector(g, niceBrushes[0], x, y, r, 1f);
@@ -206,23 +174,70 @@ namespace NoxVision
 
                 g.DrawLine(piePen, sx, sy, bx, by);
                 g.DrawLine(piePen, bx, by, tx, ty);
-
                 
                 g.DrawString(str, pieFont, textBrush, bx + (direction == 1 ? 0 : -strSize.Width + 5), by - strSize.Height);
             }
+
+            DrawTitle(g, "Распознанные объекты в видео", titleY);
+        }
+
+        private void DrawTitle(Graphics g, string title, int titleY)
+        {
+            var titleSize = g.MeasureString(title, titleFont);
+
+            g.DrawLine(titlePen, 0, titleY + titleSize.Height / 2, (width - titleSize.Width) / 2 - 20, titleY + titleSize.Height / 2);
+            g.DrawString(title, titleFont, textBrush, (width - titleSize.Width) / 2, titleY);
+            g.DrawLine(titlePen, (width + titleSize.Width) / 2 - 5, titleY + titleSize.Height / 2, width, titleY + titleSize.Height / 2);
         }
 
         private void DrawHeader(Graphics g)
         {
+            int logosize = 320;
+
             var logo = Properties.Resources.logoBig;
 
-            g.DrawImage(logo, 20, 20, 350, 350);
-            g.DrawString("NoxVision отчет", headerFont, textBrush, 350, 130);
+            g.DrawImage(logo, 0, 0, logosize, logosize);
+            g.DrawString("NoxVision отчет", headerFont, textBrush, 350, 120);
         }
 
         private void FillBackground(Graphics g)
         {
             g.FillRectangle(backgroundBrush, 0, 0, width, height);
+        }
+
+        private string LabelToString(Label l)
+        {
+            //background, aeroplane, bicycle, bird, boat,
+            //bottle, bus, car, cat, chair, cow, diningtable,
+            //dog, horse, motorbike, person, pottedplant, sheep,
+            //sofa, train, tvmonitor
+
+            switch (l)
+            {
+                case Label.aeroplane: return "самолет";
+                case Label.background: return "фон";
+                case Label.bicycle: return "велосипед";
+                case Label.bird: return "птица";
+                case Label.boat: return "лодка";
+                case Label.bottle: return "бутылка";
+                case Label.bus: return "автобус";
+                case Label.car: return "машина";
+                case Label.cat: return "кошка";
+                case Label.chair: return "стул";
+                case Label.cow: return "корова";
+                case Label.diningtable: return "стол";
+                case Label.dog: return "собака";
+                case Label.horse: return "лошадь";
+                case Label.motorbike: return "мотоцикл";
+                case Label.person: return "человек";
+                case Label.pottedplant: return "растение в горшке";
+                case Label.sheep: return "овца";
+                case Label.sofa: return "диван";
+                case Label.train: return "поезд";
+                case Label.tvmonitor: return "телевизор";
+            }
+
+            return "неизвестно";
         }
     }
 }
