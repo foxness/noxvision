@@ -257,5 +257,10 @@ namespace NoxVision
         {
             new AboutWindow().ShowDialog();
         }
+
+        private void reportItem_Click(Object sender, EventArgs e)
+        {
+            new ReportWindow().ShowDialog();
+        }
     }
 }
