@@ -265,7 +265,7 @@ namespace NoxVision
         {
             var vfp = @"R:\my\drive\sync\things\projects\noxvisioncloud\asd.mp4";
             var ai = await database.Get(vfp);
-            var rw = new ReportWindow(@"C:\Users\Rivershy\Desktop\asd.png", vfp, analysisInfo);
+            var rw = new ReportWindow(@"C:\Users\Rivershy\Desktop\asd.png", vfp, ai);
             rw.ShowDialog();
         }
 
