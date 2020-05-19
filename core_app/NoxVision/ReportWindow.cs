@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace NoxVision
@@ -6,21 +8,20 @@ namespace NoxVision
     public partial class ReportWindow : Form
     {
         private string reportFilepath;
-        private string videoFilepath;
-        private AnalysisInfo analysis;
+        private ReportGenerator rg;
 
         public ReportWindow(string reportFilepath, string videoFilepath, AnalysisInfo analysisInfo)
         {
             InitializeComponent();
-
+            
             this.reportFilepath = reportFilepath;
-            this.videoFilepath = videoFilepath;
-            this.analysis = analysisInfo;
+            rg = new ReportGenerator(videoFilepath, analysisInfo);
         }
 
         private void ReportWindow_Load(Object sender, EventArgs e)
         {
-            Console.WriteLine(reportFilepath);
+            var report = rg.GenerateReport();
+            report.Save(reportFilepath, ImageFormat.Png);
         }
     }
 }

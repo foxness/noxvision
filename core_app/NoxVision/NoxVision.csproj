@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportGenerator.cs" />
     <Compile Include="ReportWindow.cs">
       <SubType>Form</SubType>
     </Compile>
