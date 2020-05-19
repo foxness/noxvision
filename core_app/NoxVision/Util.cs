@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,44 @@ namespace NoxVision
                 var hash = sha.ComputeHash(textData);
                 return BitConverter.ToString(hash).Replace("-", String.Empty);
             }
+        }
+
+        public static Bitmap Subregion(Bitmap orig, int sx, int sy, int ex, int ey)
+        {
+            if (sx < 0)
+            {
+                sx = 0;
+            }
+
+            if (sy < 0)
+            {
+                sy = 0;
+            }
+
+            if (ex >= orig.Width)
+            {
+                ex = orig.Width - 1;
+            }
+
+            if (ey >= orig.Height)
+            {
+                ey = orig.Height - 1;
+            }
+
+            var w = ex - sx;
+            var h = ey - sy;
+
+            var output = new Bitmap(w, h);
+            for (var x = 0; x < w; x++)
+            {
+                for (var y = 0; y < h; y++)
+                {
+                    var pixel = orig.GetPixel(sx + x, sy + y);
+                    output.SetPixel(x, y, pixel);
+                }
+            }
+
+            return output;
         }
     }
 }

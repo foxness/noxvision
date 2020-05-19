@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Accord.Video.FFMPEG;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -10,11 +12,11 @@ namespace NoxVision
 {
     class ReportGenerator
     {
+        private static readonly int width = 1000;
+        private static readonly int height = 3000;
+
         private string videoFilepath;
         private AnalysisInfo analysis;
-
-        private static readonly int width = 1000;
-        private static readonly int height = 2000;
 
         private Font headerFont;
         private Font pieFont;
@@ -22,15 +24,20 @@ namespace NoxVision
 
         private Pen piePen;
         private Pen titlePen;
+        private Pen borderPen;
 
         private Brush backgroundBrush;
         private Brush textBrush;
         private List<Brush> niceBrushes;
 
+        private Random random;
+
         public ReportGenerator(string videoFilepath, AnalysisInfo analysisInfo)
         {
             this.videoFilepath = videoFilepath;
             analysis = analysisInfo;
+
+            random = new Random();
 
             headerFont = new Font("Open Sans", 48, FontStyle.Bold);
             pieFont = new Font("Open Sans", 18, FontStyle.Regular);
@@ -38,6 +45,7 @@ namespace NoxVision
 
             piePen = new Pen(Color.White, 3);
             titlePen = new Pen(Color.FromArgb(147, 126, 243), 4);
+            borderPen = new Pen(Color.FromArgb(150, 224, 218), 5);
 
             backgroundBrush = new SolidBrush(Color.FromArgb(17, 17, 17));
             textBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
@@ -62,8 +70,119 @@ namespace NoxVision
             FillBackground(g);
             DrawHeader(g);
             DrawStatCircle(g);
+            DrawObjectStripe(g);
 
             return report;
+        }
+
+        private List<Bitmap> GetRandomObjectImages(int imgCount)
+        {
+            var objCount = analysis.frames.Select(f => f.objs.Count).Sum();
+            var imgIds = new HashSet<int>();
+
+            while (imgIds.Count < imgCount)
+            {
+                var id = random.Next(objCount);
+                imgIds.Add(id);
+            }
+
+            var reader = new VideoFileReader();
+            reader.Open(videoFilepath);
+
+            var imgs = new List<Bitmap>();
+
+            int currentId = 0;
+            var framecount = reader.FrameCount;
+            for (int i = 0; i < framecount; i++)
+            {
+                if (i % 10 == 0)
+                {
+                    Console.WriteLine($"frame {i + 1}/{framecount} ({(i + 1) / (double)framecount:P2})");
+                }
+
+                var frame = reader.ReadVideoFrame(i);
+                foreach (var obj in analysis.frames[i].objs)
+                {
+                    if (imgIds.Contains(currentId))
+                    {
+                        var img = Util.Subregion(frame, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+                        imgs.Add(img);
+                    }
+
+                    if (imgs.Count == imgIds.Count)
+                    {
+                        break;
+                    }
+
+                    currentId++;
+                }
+
+                if (imgs.Count == imgIds.Count)
+                {
+                    break;
+                }
+
+                frame.Dispose();
+            }
+
+            return imgs;
+        }
+
+        private void DrawObjectStripe(Graphics g)
+        {
+            const int stripeH = 500;
+
+            var imgs = GetRandomObjectImages(30);
+
+            var temp = new Bitmap(width, stripeH);
+            var og = Graphics.FromImage(temp);
+            
+            for (int i = 0; i < 100; i++)
+            {
+                int cx = random.Next(temp.Width);
+                int cy = random.Next(temp.Height);
+                int j = random.Next(imgs.Count);
+
+                var img = imgs[j];
+                var x1 = cx - img.Width / 2;
+                var y1 = cy - img.Height / 2;
+
+                var x2 = x1 + img.Width;
+                var y2 = y1;
+
+                var x3 = x2;
+                var y3 = y2 + img.Height;
+
+                var x4 = x1;
+                var y4 = y3;
+
+                og.DrawImage(img, x1, y1);
+
+                og.DrawLine(borderPen, x1, y1, x2, y2);
+                og.DrawLine(borderPen, x2, y2, x3, y3);
+                og.DrawLine(borderPen, x3, y3, x4, y4);
+                og.DrawLine(borderPen, x1, y1, x4, y4);
+            }
+
+            const int stripeY = 1100;
+            const int slopeH = 80;
+
+            og.Dispose();
+            g.DrawImage(temp, 0, stripeY);
+            temp.Dispose();
+            
+            var points = new Point[3];
+            points[0] = new Point(0, stripeY);
+            points[1] = new Point(width, stripeY);
+            points[2] = new Point(0, stripeY + slopeH);
+
+            g.FillPolygon(backgroundBrush, points);
+
+            points[0] = new Point(0, stripeY + stripeH);
+            points[1] = new Point(width, stripeY + stripeH);
+            points[2] = new Point(width, stripeY + stripeH - slopeH);
+
+            g.FillPolygon(backgroundBrush, points);
         }
 
         private Dictionary<string, double> GetStatCircle()

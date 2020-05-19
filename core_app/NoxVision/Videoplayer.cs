@@ -287,24 +287,6 @@ namespace NoxVision
             }
         }
 
-        private Bitmap Subregion(Bitmap orig, int sx, int sy, int ex, int ey)
-        {
-            var w = ex - sx;
-            var h = ey - sy;
-
-            var output = new Bitmap(w, h);
-            for (var x = 0; x < w; x++)
-            {
-                for (var y = 0; y < h; y++)
-                {
-                    var pixel = orig.GetPixel(sx + x, sy + y);
-                    output.SetPixel(x, y, pixel);
-                }
-            }
-
-            return output;
-        }
-
         public void Draw(Graphics g)
         {
             if (!videoLoaded)
