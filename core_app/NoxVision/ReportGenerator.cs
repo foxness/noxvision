@@ -1,6 +1,7 @@
 ﻿using Accord.Video.FFMPEG;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
@@ -70,9 +71,97 @@ namespace NoxVision
             FillBackground(g);
             DrawHeader(g);
             DrawStatCircle(g);
-            DrawObjectStripe(g);
+            //DrawObjectStripe(g);
+            DrawPeople(g);
 
             return report;
+        }
+
+        private bool OneContainsTwo(int sx1, int sy1, int ex1, int ey1, int sx2, int sy2, int ex2, int ey2)
+        {
+            return sx1 <= sx2 && sy1 <= sy2 && ex1 >= ex2 && ey1 >= ey2;
+        }
+
+        private List<Tuple<int, List<int>>> GetPeopleRects()
+        {
+            var hashsets = analysis.frames.Select(f => f.faces.Select(face => face.cluster).ToHashSet()).ToList();
+            var clusters = new HashSet<int>();
+            foreach (var hashset in hashsets)
+            {
+                clusters.UnionWith(hashset);
+            }
+
+            if (clusters.Contains(-1))
+            {
+                clusters.Remove(-1);
+            }
+
+            var clusterRects = new Dictionary<int, List<Tuple<int, List<int>>>>();
+            foreach (var cluster in clusters)
+            {
+                var rects = new List<Tuple<int, List<int>>>();
+                for (int i = 0; i < analysis.frames.Count; i++)
+                {
+                    foreach (var face in analysis.frames[i].faces)
+                    {
+                        if (face.cluster != cluster)
+                        {
+                            continue;
+                        }
+
+                        var rectFound = false;
+
+                        int fSx = face.rect[0];
+                        int fSy = face.rect[1];
+                        int fEx = face.rect[2];
+                        int fEy = face.rect[3];
+
+                        foreach (var obj in analysis.frames[i].objs)
+                        {
+                            int oSx = obj.rect[0];
+                            int oSy = obj.rect[1];
+                            int oEx = obj.rect[2];
+                            int oEy = obj.rect[3];
+
+                            if (OneContainsTwo(oSx, oSy, oEx, oEy, fSx, fSy, fEx, fEy))
+                            {
+                                var rect = new List<int>();
+                                rect.Add(oSx);
+                                rect.Add(oSy);
+                                rect.Add(oEx);
+                                rect.Add(oSx);
+
+                                var t = Tuple.Create(i, rect);
+                                rects.Add(t);
+                                rectFound = true;
+                                break;
+                            }
+                        }
+
+                        if (rectFound)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                clusterRects.Add(cluster, rects);
+            }
+
+            var peopleRects = new List<Tuple<int, List<int>>>();
+            foreach (var cluster in clusterRects.Keys)
+            {
+                var samePersonRects = clusterRects[cluster];
+                var randRect = samePersonRects[random.Next(samePersonRects.Count)];
+                peopleRects.Add(randRect);
+            }
+
+            return peopleRects;
+        }
+
+        private void DrawPeople(Graphics g)
+        {
+            GetPeopleRects();
         }
 
         private List<Bitmap> GetRandomObjectImages(int imgCount)
@@ -124,6 +213,8 @@ namespace NoxVision
 
                 frame.Dispose();
             }
+
+            reader.Dispose();
 
             return imgs;
         }
