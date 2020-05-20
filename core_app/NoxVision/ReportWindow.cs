@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NoxVision
@@ -18,11 +20,18 @@ namespace NoxVision
             rg = new ReportGenerator(videoFilepath, analysisInfo);
         }
 
-        private void ReportWindow_Load(Object sender, EventArgs e)
+        private void GenerateReport()
         {
             var report = rg.GenerateReport();
             report.Save(reportFilepath, ImageFormat.Png);
+        }
 
+        private async void ReportWindow_Shown(Object sender, EventArgs e)
+        {
+            var thread = new Thread(GenerateReport);
+            thread.Start();
+
+            await Task.Factory.StartNew(() => GenerateReport());
             Close();
         }
     }

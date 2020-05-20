@@ -83,7 +83,7 @@ namespace NoxVision
         {
             reader = new VideoFileReader();
             videoLoaded = false;
-            pen = new Pen(Color.GreenYellow, 2);
+            pen = new Pen(Color.Red, 2);
             font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
             brush = new SolidBrush(Color.White);
             Playing = false;
@@ -259,12 +259,14 @@ namespace NoxVision
                     continue;
                 }
 
-                DrawLabeledBox(g, obj.label.ToString(), obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+                var la = Util.LabelToString(obj.label);
+
+                DrawLabeledBox(g, la, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
             }
 
             foreach (var face in cf.faces)
             {
-                DrawLabeledBox(g, "face", face.rect[0], face.rect[1], face.rect[2], face.rect[3]);
+                DrawLabeledBox(g, "лицо", face.rect[0], face.rect[1], face.rect[2], face.rect[3]);
             }
         }
 

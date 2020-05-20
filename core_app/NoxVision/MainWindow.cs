@@ -43,7 +43,7 @@ namespace NoxVision
             blueBrush = new SolidBrush(Color.Blue);
 
             playerTimer = new Timer();
-            playerTimer.Interval = 1000 / 120;
+            playerTimer.Interval = 1000 / 60;
             playerTimer.Tick += PlayerTimer_Tick;
         }
 
@@ -52,10 +52,15 @@ namespace NoxVision
             g = playerControl.CreateGraphics();
             database = new Database();
 
-            player = new Videoplayer();
-            player.OnPlaybackEnded += Player_OnPlaybackEnded;
+            NewVideoplayer();
             UpdatePlayButton();
             UpdateControlLocations();
+        }
+
+        private void NewVideoplayer()
+        {
+            player = new Videoplayer();
+            player.OnPlaybackEnded += Player_OnPlaybackEnded;
         }
 
         private void Player_OnPlaybackEnded()
@@ -117,7 +122,7 @@ namespace NoxVision
             using (var ofd = new OpenFileDialog())
             {
                 // ofd.InitialDirectory = "c:\\";
-                ofd.InitialDirectory = @"R:\my\drive\sync\things\projects\noxvisioncloud\people - counting - opencv\videos";
+                //ofd.InitialDirectory = @"R:\my\drive\sync\things\projects\noxvisioncloud\people - counting - opencv\videos";
                 ofd.Filter = "Video files (*.mp4;*.avi)|*.mp4;*.avi";
                 ofd.FilterIndex = 1;
                 ofd.RestoreDirectory = true;
@@ -271,29 +276,37 @@ namespace NoxVision
 
         private void reportItem_Click(Object sender, EventArgs e)
         {
-            //if (player.Playing)
-            //{
-            //    PlayButtonClick(); // pause the video for report generation
-            //}
+            if (player.Playing)
+            {
+                PlayButtonClick(); // pause the video for report generation
+                playerTimer.Stop();
+            }
 
-            //var sfd = new SaveFileDialog();
-            //sfd.Filter = "Png Image|*.png";
-            //sfd.Title = "Сохранение отчета";
+            player.Unload();
+
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Png Image|*.png";
+            sfd.Title = "Сохранение отчета";
 
             //// REMOVE ON PRODUCTION
             //sfd.FileName = @"C:\Users\Rivershy\Desktop\asd.png";
 
-            //sfd.ShowDialog();
+            sfd.ShowDialog();
 
-            //if (sfd.FileName != "")
-            //{
-            //    var rw = new ReportWindow(sfd.FileName, videoFilepath, analysisInfo);
-            //    rw.ShowDialog();
-            //}
+            if (sfd.FileName != "")
+            {
+                var rw = new ReportWindow(sfd.FileName, videoFilepath, analysisInfo);
+                rw.ShowDialog();
+
+                NewVideoplayer();
+                player.Load(videoFilepath, analysisInfo);
+                playerTimer.Start();
+                UpdatePlayButton();
+            }
 
             // -------------------------------------------------
 
-            temp();
+            //temp();
         }
     }
 }

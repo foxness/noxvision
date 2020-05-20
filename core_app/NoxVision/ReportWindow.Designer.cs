@@ -54,7 +54,7 @@
             this.Name = "ReportWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Генерация отчета";
-            this.Load += new System.EventHandler(this.ReportWindow_Load);
+            this.Shown += new System.EventHandler(this.ReportWindow_Shown);
             this.ResumeLayout(false);
 
         }

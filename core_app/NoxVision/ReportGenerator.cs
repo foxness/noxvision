@@ -356,7 +356,7 @@ namespace NoxVision
 
                     processed.Add(obj.id);
 
-                    var key = LabelToString(obj.label);
+                    var key = Util.LabelToString(obj.label);
                     if (!stats.ContainsKey(key))
                     {
                         stats.Add(key, 0);
@@ -477,41 +477,6 @@ namespace NoxVision
         private void FillBackground(Graphics g)
         {
             g.FillRectangle(backgroundBrush, 0, 0, width, height);
-        }
-
-        private string LabelToString(Label l)
-        {
-            //background, aeroplane, bicycle, bird, boat,
-            //bottle, bus, car, cat, chair, cow, diningtable,
-            //dog, horse, motorbike, person, pottedplant, sheep,
-            //sofa, train, tvmonitor
-
-            switch (l)
-            {
-                case Label.aeroplane: return "самолет";
-                case Label.background: return "фон";
-                case Label.bicycle: return "велосипед";
-                case Label.bird: return "птица";
-                case Label.boat: return "лодка";
-                case Label.bottle: return "бутылка";
-                case Label.bus: return "автобус";
-                case Label.car: return "машина";
-                case Label.cat: return "кошка";
-                case Label.chair: return "стул";
-                case Label.cow: return "корова";
-                case Label.diningtable: return "стол";
-                case Label.dog: return "собака";
-                case Label.horse: return "лошадь";
-                case Label.motorbike: return "мотоцикл";
-                case Label.person: return "человек";
-                case Label.pottedplant: return "растение в горшке";
-                case Label.sheep: return "овца";
-                case Label.sofa: return "диван";
-                case Label.train: return "поезд";
-                case Label.tvmonitor: return "телевизор";
-            }
-
-            return "неизвестно";
         }
     }
 }
