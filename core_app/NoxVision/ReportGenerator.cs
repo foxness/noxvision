@@ -68,11 +68,13 @@ namespace NoxVision
             var report = new Bitmap(width, height);
             var g = Graphics.FromImage(report);
 
+            (var randomObjImgs, var uniquePersonImgs) = AnalyzeVideo();
+
             FillBackground(g);
             DrawHeader(g);
             DrawStatCircle(g);
-            //DrawObjectStripe(g);
-            DrawPeople(g);
+            DrawObjectStripe(g, randomObjImgs);
+            DrawPeople(g, uniquePersonImgs);
 
             return report;
         }
@@ -82,7 +84,7 @@ namespace NoxVision
             return sx1 <= sx2 && sy1 <= sy2 && ex1 >= ex2 && ey1 >= ey2;
         }
 
-        private List<Tuple<int, List<int>>> GetPeopleRects()
+        private List<Tuple<int, List<int>>> GetUniquePersonRects()
         {
             var hashsets = analysis.frames.Select(f => f.faces.Select(face => face.cluster).ToHashSet()).ToList();
             var clusters = new HashSet<int>();
@@ -148,37 +150,43 @@ namespace NoxVision
                 clusterRects.Add(cluster, rects);
             }
 
-            var peopleRects = new List<Tuple<int, List<int>>>();
+            var uniquePersonRects = new List<Tuple<int, List<int>>>();
             foreach (var cluster in clusterRects.Keys)
             {
                 var samePersonRects = clusterRects[cluster];
                 var randRect = samePersonRects[random.Next(samePersonRects.Count)];
-                peopleRects.Add(randRect);
+                uniquePersonRects.Add(randRect);
             }
 
-            return peopleRects;
+            return uniquePersonRects;
         }
 
-        private void DrawPeople(Graphics g)
+        private void DrawPeople(Graphics g, List<Bitmap> uniquePersonImgs)
         {
-            GetPeopleRects();
+            //GetUniquePersonRects();
         }
 
-        private List<Bitmap> GetRandomObjectImages(int imgCount)
+        // aka Get Random Object Images and Unique People Images
+        private (List<Bitmap>, List<Bitmap>) AnalyzeVideo()
         {
+            const int randomImgCount = 30;
+
             var objCount = analysis.frames.Select(f => f.objs.Count).Sum();
-            var imgIds = new HashSet<int>();
+            var randImgIds = new HashSet<int>();
 
-            while (imgIds.Count < imgCount)
+            while (randImgIds.Count < randomImgCount)
             {
                 var id = random.Next(objCount);
-                imgIds.Add(id);
+                randImgIds.Add(id);
             }
+
+            var uniquePersonRects = GetUniquePersonRects();
+            var uniquePersonImgs = new List<Bitmap>();
 
             var reader = new VideoFileReader();
             reader.Open(videoFilepath);
 
-            var imgs = new List<Bitmap>();
+            var randomObjectImgs = new List<Bitmap>();
 
             int currentId = 0;
             var framecount = reader.FrameCount;
@@ -190,23 +198,40 @@ namespace NoxVision
                 }
 
                 var frame = reader.ReadVideoFrame(i);
-                foreach (var obj in analysis.frames[i].objs)
-                {
-                    if (imgIds.Contains(currentId))
-                    {
-                        var img = Util.Subregion(frame, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
-                        imgs.Add(img);
-                    }
 
-                    if (imgs.Count == imgIds.Count)
+                foreach (var uniquePersonRect in uniquePersonRects)
+                {
+                    if (uniquePersonRects.Count == uniquePersonImgs.Count)
                     {
                         break;
+                    }
+
+                    if (uniquePersonRect.Item1 == i)
+                    {
+                        var rect = uniquePersonRect.Item2;
+                        var upi = Util.Subregion(frame, rect[0], rect[1], rect[2], rect[3]);
+
+                        uniquePersonImgs.Add(upi);
+                    }
+                }
+
+                foreach (var obj in analysis.frames[i].objs)
+                {
+                    if (randomObjectImgs.Count == randImgIds.Count)
+                    {
+                        break;
+                    }
+
+                    if (randImgIds.Contains(currentId))
+                    {
+                        var img = Util.Subregion(frame, obj.rect[0], obj.rect[1], obj.rect[2], obj.rect[3]);
+                        randomObjectImgs.Add(img);
                     }
 
                     currentId++;
                 }
 
-                if (imgs.Count == imgIds.Count)
+                if (randomObjectImgs.Count == randImgIds.Count && uniquePersonRects.Count == uniquePersonImgs.Count)
                 {
                     break;
                 }
@@ -216,14 +241,14 @@ namespace NoxVision
 
             reader.Dispose();
 
-            return imgs;
+            return (randomObjectImgs, uniquePersonImgs);
         }
 
-        private void DrawObjectStripe(Graphics g)
+        private void DrawObjectStripe(Graphics g, List<Bitmap> randomObjImgs)
         {
             const int stripeH = 500;
 
-            var imgs = GetRandomObjectImages(30);
+            var imgs = randomObjImgs;
 
             var temp = new Bitmap(width, stripeH);
             var og = Graphics.FromImage(temp);
