@@ -163,7 +163,43 @@ namespace NoxVision
 
         private void DrawPeople(Graphics g, List<Bitmap> uniquePersonImgs)
         {
-            //GetUniquePersonRects();
+            const int titleY = 1700;
+            const int startY = titleY + 200;
+            const int peoplePerRow = 5;
+            const int marginH = 100;
+            const int rowDist = 300;
+            const int maxWidth = 150;
+
+            int distBetweenPeople = (width - marginH * 2 - maxWidth * peoplePerRow) / (peoplePerRow - 1);
+
+            DrawTitle(g, $"На видео было найдено {uniquePersonImgs.Count} человек(а)", titleY);
+
+            int i = 0;
+            for (int y = 0; true; y++)
+            {
+                if (i == uniquePersonImgs.Count)
+                {
+                    break;
+                }
+
+                for (int x = 0; x < peoplePerRow; x++)
+                {
+                    if (i == uniquePersonImgs.Count)
+                    {
+                        break;
+                    }
+
+                    var img = uniquePersonImgs[i];
+                    int w = maxWidth;
+                    int h = img.Height * maxWidth / img.Width;
+
+                    int xx = marginH + x * (maxWidth + distBetweenPeople);
+                    int yy = startY - h / 2 + y * rowDist;
+
+                    g.DrawImage(img, xx, yy, w, h);
+                    i++;
+                }
+            }
         }
 
         // aka Get Random Object Images and Unique People Images
@@ -240,6 +276,9 @@ namespace NoxVision
             }
 
             reader.Dispose();
+
+            uniquePersonImgs.Shuffle(random);
+            randomObjectImgs.Shuffle(random);
 
             return (randomObjectImgs, uniquePersonImgs);
         }
