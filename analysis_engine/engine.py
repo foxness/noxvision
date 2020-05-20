@@ -31,6 +31,9 @@ class Analyzer:
             for face in frame:
                 faces.append(face)
         
+        if len(faces) == 0:
+            return
+        
         embeddings = [face.embedding for face in faces]
         self.face_clusterer.faces = embeddings
         clusters = self.face_clusterer.get_clusters()
