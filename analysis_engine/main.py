@@ -19,12 +19,7 @@ progress_filename = 'progress'
 
 ap = argparse.ArgumentParser()
 
-# ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = True)
-# ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False)
-# ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False)
-
-#ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\Can You Win Blindfolded Musical Chairs_.mp4")
-ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
+ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = True)
 ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False)
 ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
 ap.add_argument("-oct", "--objectconfidencethreshold", type = int, help = "object detection confidence threshold", required = False, default = 50)
