@@ -122,7 +122,6 @@ namespace NoxVision
             using (var ofd = new OpenFileDialog())
             {
                 // ofd.InitialDirectory = "c:\\";
-                //ofd.InitialDirectory = @"R:\my\drive\sync\things\projects\noxvisioncloud\people - counting - opencv\videos";
                 ofd.Filter = "Video files (*.mp4;*.avi)|*.mp4;*.avi";
                 ofd.FilterIndex = 1;
                 ofd.RestoreDirectory = true;
@@ -266,14 +265,6 @@ namespace NoxVision
             new AboutWindow().ShowDialog();
         }
 
-        private async void temp()
-        {
-            var vfp = @"R:\my\drive\sync\things\projects\noxvisioncloud\asd.mp4";
-            var ai = await database.Get(vfp);
-            var rw = new ReportWindow(@"C:\Users\Rivershy\Desktop\asd.png", vfp, ai);
-            rw.ShowDialog();
-        }
-
         private void reportItem_Click(Object sender, EventArgs e)
         {
             if (player.Playing)
@@ -288,9 +279,6 @@ namespace NoxVision
             sfd.Filter = "Png Image|*.png";
             sfd.Title = "Сохранение отчета";
 
-            //// REMOVE ON PRODUCTION
-            //sfd.FileName = @"C:\Users\Rivershy\Desktop\asd.png";
-
             sfd.ShowDialog();
 
             if (sfd.FileName != "")
@@ -303,10 +291,6 @@ namespace NoxVision
                 playerTimer.Start();
                 UpdatePlayButton();
             }
-
-            // -------------------------------------------------
-
-            //temp();
         }
     }
 }

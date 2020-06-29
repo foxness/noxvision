@@ -15,16 +15,25 @@ namespace NoxVision
 {
     public partial class AnalysisWindow : Form
     {
-        private static readonly string analysisEnginePath = @"R:\my\projects\noxvision\analysis_engine\main.py";
-        private static readonly string analysisEngineDir = @"R:\my\projects\noxvision\analysis_engine\";
+        private static readonly string analysisEngineDirname = "analysis_engine";
+        private static readonly string analysisEngineFilename = @"main.py";
         private static readonly string progressFilename = @"progress";
         private static readonly string analysisFilename = @"analysis.json";
+
+        private string analysisEngineDirectory;
+        private string analysisEngineFilepath;
 
         public string OutputAnalysisFilepath { get; set; }
         public string FilePath { get; set; }
 
         public AnalysisWindow()
         {
+            var executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var directoryPath = Path.GetDirectoryName(executablePath);
+
+            analysisEngineDirectory = Path.Combine(directoryPath, analysisEngineDirname);
+            analysisEngineFilepath = Path.Combine(analysisEngineDirectory, analysisEngineFilename);
+
             InitializeComponent();
         }
 
@@ -37,7 +46,7 @@ namespace NoxVision
 
             var process = LaunchEngine(confidenceThreshold, faceConfidenceThreshold);
 
-            var progressFile = Path.Combine(analysisEngineDir, progressFilename);
+            var progressFile = Path.Combine(analysisEngineDirectory, progressFilename);
             while (!process.HasExited)
             {
                 if (File.Exists(progressFile))
@@ -65,7 +74,7 @@ namespace NoxVision
             await Task.Run(() => LaunchAndReadProgressFile(progress));
 
             DialogResult = DialogResult.OK;
-            OutputAnalysisFilepath = Path.Combine(analysisEngineDir, analysisFilename);
+            OutputAnalysisFilepath = Path.Combine(analysisEngineDirectory, analysisFilename);
             Close();
         }
 
@@ -73,8 +82,8 @@ namespace NoxVision
         {
             var process = new Process();
             process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
-            process.StartInfo.Arguments = $"{analysisEnginePath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold} -fct {faceConfidenceThreshold}";
-            process.StartInfo.WorkingDirectory = analysisEngineDir;
+            process.StartInfo.Arguments = $"{analysisEngineFilepath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold} -fct {faceConfidenceThreshold}";
+            process.StartInfo.WorkingDirectory = analysisEngineDirectory;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.UseShellExecute = false;
 

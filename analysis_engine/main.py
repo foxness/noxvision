@@ -25,7 +25,7 @@ ap = argparse.ArgumentParser()
 
 #ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\Can You Win Blindfolded Musical Chairs_.mp4")
 ap.add_argument("-i", "--input", type = str, help = "path to input video file", required = False, default = "R:\\my\\drive\\sync\\things\\projects\\noxvisioncloud\\people-counting-opencv\\videos\\example_01.mp4")
-ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = 'output.avi')
+ap.add_argument("-ov", "--outputvideo", type = str, help = "path to optional output video file", required = False, default = None)
 ap.add_argument("-oa", "--outputanalysis", type = str, help = "path to optional output analysis file", required = False, default = 'analysis.json')
 ap.add_argument("-oct", "--objectconfidencethreshold", type = int, help = "object detection confidence threshold", required = False, default = 50)
 ap.add_argument("-fct", "--faceconfidencethreshold", type = int, help = "face detection confidence threshold", required = False, default = 50)

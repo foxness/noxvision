@@ -299,14 +299,6 @@ namespace NoxVision
             var frame = reader.ReadVideoFrame(currentFrame);
             if (frame != null)
             {
-                //int i = 0;
-                //foreach (var face in analysisInfo.frames[currentFrame].faces)
-                //{
-                //    var faceimg = Subregion(frame, face.rect[0], face.rect[1], face.rect[2], face.rect[3]);
-                //    faceimg.Save(Path.Combine(@"C:\Users\Rivershy\Desktop\asdy\", $"{face.cluster}-{currentFrame}-{i}.jpg"));
-                //    i++;
-                //}
-
                 DrawFrame(g, frame);
                 frame.Dispose();
                 Update();
