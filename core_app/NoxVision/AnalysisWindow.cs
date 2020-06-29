@@ -80,12 +80,14 @@ namespace NoxVision
 
         private Process LaunchEngine(int confidenceThreshold, int faceConfidenceThreshold)
         {
+            var args = $"{analysisEngineFilepath} -i \"{FilePath}\" -oa analysis.json -oct {confidenceThreshold} -fct {faceConfidenceThreshold}";
+
             var process = new Process();
-            process.StartInfo.FileName = @"C:\Users\Rivershy\AppData\Local\Programs\Python\Python38\python.exe";
-            process.StartInfo.Arguments = $"{analysisEngineFilepath} -i \"{FilePath}\" -ov output.avi -oa analysis.json -oct {confidenceThreshold} -fct {faceConfidenceThreshold}";
+            process.StartInfo.FileName = @"python";
+            process.StartInfo.Arguments = args;
             process.StartInfo.WorkingDirectory = analysisEngineDirectory;
             process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.UseShellExecute = true;
 
             process.Start();
 
