@@ -35,7 +35,7 @@ args = vars(ap.parse_args())
 # ---------------------------------------------------------------------------
 
 input_video = args['input']
-output_video = args['outputvideo']
+output_video = None # args['outputvideo']
 output_analysis = args['outputanalysis']
 confidence_threshold = args['objectconfidencethreshold'] / 100.0
 face_confidence_threshold = args['faceconfidencethreshold'] / 100.0
